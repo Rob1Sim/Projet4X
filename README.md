@@ -1,0 +1,95 @@
+
+# **Projet JEE - 4X Game**
+## **Auteurs**
+- Robin Simonneau
+- [Autres contributeurs]
+
+---
+## **Description**
+Ce projet consiste à développer un jeu de stratégie multijoueur au tour par tour respectant les principes des "4X" : **eXploration, eXpansion, eXploitation, et eXtermination**. L'objectif est de fournir une application web robuste et interactive en utilisant les technologies Jakarta EE et en respectant l'architecture MVC.
+
+## **Fonctionnalités principales**
+- **Inscription et connexion** : Gestion des utilisateurs avec des pseudos uniques.
+- **Multijoueur** : Synchronisation des actions entre plusieurs joueurs.
+- **Gameplay** :
+  - Gestion des soldats, villes, et ressources.
+  - Déplacement, combat, et recrutement dans un environnement interactif.
+- **Gestion du score** : Calcul et affichage des scores basés sur les actions des joueurs.
+- **Interface intuitive** : Pages JSP dynamiques pour la gestion du jeu.
+
+---
+
+## **Prérequis**
+- **Java Development Kit (JDK)** : Version 21
+- **Apache Tomcat** : Version 11
+- **Base de données** : SQLite
+- **Maven** : Outil de gestion de build
+
+---
+
+## **Structure du projet**
+```plaintext
+Projet4DX
+├── src/main/java
+│   ├── org.example.model        # Entités et logique métier
+│   ├── org.examplecontroller   # Servlets et contrôleurs
+│   ├── org.exampleutil         # Classes utilitaires
+├── src/main/webapp
+│   ├── WEB-INF
+│   │   └── web.xml             # Configuration du déploiement
+│   ├── views                   # Fichiers JSP
+│   │   ├── login.jsp
+│   │   ├── game.jsp
+│   │   ├── score.jsp
+│   │   └── combat.jsp
+│   ├── assets                  # Ressources statiques
+│       ├── css                 # Styles CSS
+│       ├── js                  # Scripts JavaScript
+│       └── images              # Images nécessaires
+├── src/main/resources
+│   ├── sql                     # Scripts SQL pour la base
+│   └── application.properties  # Configuration
+├── src/test/java               # Tests unitaires
+├── pom.xml                     # Configuration Maven
+└── README.md                   # Documentation
+```
+
+---
+
+## **Installation**
+1. **Cloner le projet :**
+   ```bash
+   git clone https://github.com/Rob1Sim/Projet4DX.git
+   cd Projet4DX
+   ```
+
+2. **Configurer la base de données SQLite :**
+   - Assurez-vous que SQLite est installé sur votre système.
+   - Les scripts SQL nécessaires sont disponibles dans le dossier `src/main/resources/sql`.
+
+
+
+3. **Compiler et déployer :**
+   - Avec Maven :
+     ```bash
+     mvn clean install
+     ```
+
+4. **Déployer sur Tomcat :**
+   - Copier le fichier `.war` généré dans le dossier `webapps` de Tomcat.
+   - Démarrer Tomcat et accéder à l'application via [http://localhost:8080/](http://localhost:8080/) (peut varier celon votre configuration tomcat).
+
+---
+
+## **Technologies utilisées**
+- **Langage** : Java (JDK 21)
+- **Framework** : Jakarta EE (Servlets et JSP)
+- **Serveur d'application** : Apache Tomcat 11
+- **Base de données** : SQLite
+- **Client-side** : HTML, CSS, JavaScript
+
+---
+
+
+
+
