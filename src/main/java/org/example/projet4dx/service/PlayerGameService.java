@@ -1,7 +1,7 @@
 package org.example.projet4dx.service;
 
 import jakarta.persistence.EntityManager;
-import org.example.projet4dx.dao.PlayerGameDao;
+import org.example.projet4dx.model.dao.PlayerGameDao;
 import org.example.projet4dx.model.PlayerGame;
 
 import java.util.List;

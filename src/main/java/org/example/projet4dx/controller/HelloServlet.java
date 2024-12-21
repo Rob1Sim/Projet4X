@@ -1,4 +1,4 @@
-package org.example.projet4dx;
+package org.example.projet4dx.controller;
 
 import java.io.*;
 

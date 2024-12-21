@@ -1,4 +1,4 @@
-package org.example.projet4dx.dao;
+package org.example.projet4dx.model.dao;
 
 import jakarta.persistence.EntityManager;
 

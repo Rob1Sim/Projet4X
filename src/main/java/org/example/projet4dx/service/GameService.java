@@ -1,9 +1,10 @@
 package org.example.projet4dx.service;
 
 import jakarta.persistence.EntityManager;
-import org.example.projet4dx.dao.GameDAO;
+import org.example.projet4dx.model.dao.GameDAO;
 import org.example.projet4dx.model.Game;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class GameService {
@@ -19,5 +20,14 @@ public class GameService {
 
     public Game getGame(int id) {
         return gameDAO.getById(Game.class, id);
+    }
+
+    /**
+     * Creates a new Game entity with the current date and persists it using the associated GameDAO.
+     */
+    public void createGame() {
+        Game game = new Game();
+        game.setDate(LocalDate.now());
+        gameDAO.create(game);
     }
 }
