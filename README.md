@@ -22,7 +22,7 @@ Ce projet consiste à développer un jeu de stratégie multijoueur au tour par t
 ## **Prérequis**
 - **Java Development Kit (JDK)** : Version 21
 - **Apache Tomcat** : Version 11
-- **Base de données** : SQLite
+- **Base de données** : MySQL
 - **Maven** : Outil de gestion de build
 
 ---
@@ -47,8 +47,7 @@ Projet4DX
 │       ├── js                  # Scripts JavaScript
 │       └── images              # Images nécessaires
 ├── src/main/resources
-│   ├── sql                     # Scripts SQL pour la base
-│   └── application.properties  # Configuration
+│   └── sql   
 ├── src/test/java               # Tests unitaires
 ├── pom.xml                     # Configuration Maven
 └── README.md                   # Documentation
@@ -61,10 +60,15 @@ Projet4DX
    ```bash
    git clone https://github.com/Rob1Sim/Projet4DX.git
    cd Projet4DX
-   ```
+  
 
-2. **Configurer la base de données SQLite :**
-   - Assurez-vous que SQLite est installé sur votre système.
+2. **Configurer la base de données :**
+   - Installer MySQL ou builder l'image docker du repo.
+     - ```bash 
+       docker build -t mysql-4dx . 
+       docker run -d --name mysql-4dx-container -p 3306:3306 mysql-4dx
+       ```
+   - Le user par défaut est 'user' le mdp 'password' le nom de la base 'projet_4dx'
    - Les scripts SQL nécessaires sont disponibles dans le dossier `src/main/resources/sql`.
 
 
