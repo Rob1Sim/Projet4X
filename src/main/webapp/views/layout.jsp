@@ -16,15 +16,16 @@
 <nav class="navbar">
     <div class="navbar-container">
         <div class="logo">
-            <a href="#">4DX</a>
+            <a href="#">4X</a>
         </div>
         <ul class="nav-links">
             <li><a href="#" class="link-btn">Partie</a></li>
             <li><a href="${pageContext.request.contextPath}/profile"  class="link-btn">Profile</a></li>
-            <% Player loggedInUser = (Player) session.getAttribute("loggedInUser");%>
+            <% Player loggedInUser = (Player) request.getAttribute("currentPlayer");%>
             <li class="greeting">
-                <% if (loggedInUser != null) { %>
-                Bonjour, ${loggedInUser.getLogin()}
+                <% if (loggedInUser != null) {
+                    System.out.println("Le player :"+loggedInUser.getLogin());%>
+                Bonjour, ${currentPlayer.getLogin()}
                 <% } else { %>
                 <a href="${pageContext.request.contextPath}/login" class="link-btn">Connexion/Inscription</a>
                 <% } %>
