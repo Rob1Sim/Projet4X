@@ -21,8 +21,7 @@ public class PlayerGame implements Serializable {
 
     @Column(nullable = false)
     private int score = 0;
-    @Column(nullable = false)
-    private int productionPoints = 0;
+
 
     public PlayerGame() {}
 
@@ -42,14 +41,6 @@ public class PlayerGame implements Serializable {
 
     public Game getGame() {
         return game;
-    }
-
-    public int getProductionPoints() {
-        return productionPoints;
-    }
-
-    public void setProductionPoints(int productionPoints) {
-        this.productionPoints = productionPoints;
     }
 
     public int getScore() {

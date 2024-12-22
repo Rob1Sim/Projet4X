@@ -1,6 +1,8 @@
 package org.example.projet4dx.service;
 
 import jakarta.persistence.EntityManager;
+import org.example.projet4dx.model.Game;
+import org.example.projet4dx.model.Player;
 import org.example.projet4dx.model.dao.PlayerGameDao;
 import org.example.projet4dx.model.PlayerGame;
 
@@ -24,4 +26,30 @@ public class PlayerGameService {
     public List<PlayerGame> getPlayerGamesByPlayerId(long id) {
         return playerGameDao.getByPlayerId(id);
     }
+
+    /**
+     * Creates a new PlayerGame entity for the given Player and Game instances.
+     *
+     * @param player the Player entity to be associated with the PlayerGame
+     * @param game the Game entity to be associated with the PlayerGame
+     * @return the newly created PlayerGame entity
+     */
+    public PlayerGame createPlayerGame(Player player, Game game) {
+        PlayerGame playerGame = new PlayerGame(player, game);
+        playerGameDao.create(playerGame);
+        return playerGame;
+    }
+
+    /**
+     * Updates the score of a player in a game.
+     *
+     * @param id the ID of the player's game
+     * @param score the new score to update for the player
+     */
+    public void updatePlayerScore(long id, int score) {
+        PlayerGame playerGame = playerGameDao.getById(PlayerGame.class, id);
+        playerGame.setScore(score);
+        playerGameDao.update(playerGame);
+    }
+
 }
