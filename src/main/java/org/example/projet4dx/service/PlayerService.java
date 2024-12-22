@@ -1,11 +1,13 @@
 package org.example.projet4dx.service;
 
 import jakarta.persistence.EntityManager;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.websocket.Session;
 import org.example.projet4dx.model.PlayerGame;
 import org.example.projet4dx.model.dao.PlayerDAO;
 import org.example.projet4dx.model.Player;
+import org.example.projet4dx.util.AuthenticationUtil;
 import org.example.projet4dx.util.StringEscapeUtils;
 import org.example.projet4dx.util.exceptions.AuthenticationException;
 
@@ -69,16 +71,17 @@ public class PlayerService {
     }
 
 
+
     /**
-     * Authenticates a player by verifying the provided login and password.
+     * Logs in a player with the provided login and password, saving the player in the session if successful.
      *
      * @param login the login name of the player
      * @param password the password of the player
-     * @param session the HttpSession for storing the player if authenticated
-     * @return true if authentication is successful, false otherwise
-     * @throws AuthenticationException if login or password is empty
+     * @param req the HttpServletRequest object for session management
+     * @return true if the player is successfully logged in, false otherwise
+     * @throws AuthenticationException if login or password is empty or authentication fails
      */
-    public boolean loginPlayer(String login, String password, HttpSession session) throws AuthenticationException {
+    public boolean loginPlayer(String login, String password, HttpServletRequest req) throws AuthenticationException {
         login = StringEscapeUtils.sanitizeString(login);
         password = StringEscapeUtils.sanitizeString(password);
         if (login.isEmpty() || password.isEmpty()) {
@@ -86,13 +89,13 @@ public class PlayerService {
         }
         Player player = getByLogin(login);
         if (player != null && player.getPassword().equals(password)){
-            session.setAttribute("loggedInUser", player);
+            AuthenticationUtil.saveCurrentPlayer(player,req);
             return true;
         }
         if (player == null) {
             registerPlayer(login, password);
             Player newPlayer = getByLogin(login);
-            session.setAttribute("loggedInUser", newPlayer);
+            AuthenticationUtil.saveCurrentPlayer(newPlayer,req);
             return true;
         }
         return false;
