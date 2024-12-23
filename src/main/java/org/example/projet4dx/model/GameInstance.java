@@ -1,11 +1,12 @@
 package org.example.projet4dx.model;
 
+import org.example.projet4dx.model.gameEngine.Map;
 import org.example.projet4dx.model.gameEngine.PlayerDTO;
+import org.example.projet4dx.model.gameEngine.Soldier;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Represents a singleton instance of a game session. It manages the game state, players, and game turns.
@@ -82,5 +83,28 @@ public class GameInstance {
 
     public Game getGame() {
         return game;
+    }
+
+    /**
+     * Retrieves a player object from the list of players based on the provided PlayerDTO object.
+     *
+     * @param player The PlayerDTO object to search for in the player list.
+     * @return The found PlayerDTO object if present, otherwise null.
+     */
+    public PlayerDTO getPlayerByPlayer(PlayerDTO player) {
+        return players.stream().filter(p -> p.equals(player)).findFirst().orElse(null);
+    }
+
+    /**
+     * Retrieves all the soldiers from all players in the game instance.
+     *
+     * @return A list of Soldier objects representing all the soldiers in the game.
+     */
+    public List<Soldier> getAllSoldiers(){
+        List<Soldier> allSoldiers = new ArrayList<>();
+        for (PlayerDTO player : players) {
+            allSoldiers.addAll(player.getSoldiers());
+        }
+        return allSoldiers;
     }
 }
