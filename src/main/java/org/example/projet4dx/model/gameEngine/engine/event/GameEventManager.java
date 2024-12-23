@@ -15,7 +15,7 @@ public class GameEventManager {
      * This class represents a manager for game events in the application.
      */
     private GameEventManager() {
-        listeners = new ArrayList<GameEventListener>();
+        listeners = new ArrayList<>();
     }
 
     /**

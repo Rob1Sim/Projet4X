@@ -1,5 +1,8 @@
 package org.example.projet4dx.model.gameEngine.utils;
 
+/**
+ * Represents the cardinal directions used in a game.
+ */
 public enum Direction {
     EAST("Est"),
     SOUTH("Sud"),

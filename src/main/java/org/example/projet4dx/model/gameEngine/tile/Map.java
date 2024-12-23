@@ -19,6 +19,10 @@ public class Map {
         return tiles;
     }
 
+    /**
+     * Creates a new Map object with dimensions 10x10 and randomly generates Tiles based on the provided width and height.
+     * Each Tile is initialized with a random type and image.
+     */
     public Map (){
         width = 10;
         height = 10;
@@ -87,7 +91,7 @@ public class Map {
      * @return An empty Tile from the list, or null if no empty Tiles are found.
      */
     public Tile getAnEmptyTile(){
-        List<Tile> emptyTiles = new ArrayList<Tile>();
+        List<Tile> emptyTiles = new ArrayList<>();
         for (Tile tile : tiles) {
             if (tile.getType() instanceof GrassTile && Soldier.getSoldierByCoordinates(tile.getCoordinates()) == null) {
                 emptyTiles.add(tile);

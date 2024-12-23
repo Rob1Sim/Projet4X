@@ -4,7 +4,7 @@ import org.example.projet4dx.model.gameEngine.utils.Coordinates;
 import org.example.projet4dx.model.gameEngine.Soldier;
 
 public class Tile {
-    private Coordinates coordinates;
+    private final Coordinates coordinates;
     private ITileType type;
     private String image;
 

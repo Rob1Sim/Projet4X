@@ -8,6 +8,9 @@ import org.example.projet4dx.model.gameEngine.utils.Coordinates;
 
 import java.util.Random;
 
+/**
+ * Represents a soldier entity in the game that implements combat capabilities.
+ */
 public class Soldier implements ICombat {
     private Coordinates coordinates;
     private final PlayerDTO playerDTO;

@@ -20,15 +20,16 @@ import java.util.Random;
  */
 public class GameInstance {
     private static GameInstance instance;
-    private Game game;
+    private final Game game;
     private final List<PlayerDTO> players;
-    private Map map;
+    private final Map map;
     private int currentPlayerTurn;
 
 
 
     private GameInstance() {
         game = new Game();
+        map = new Map();
         game.setDate(LocalDate.now());
         players = new ArrayList<>();
         this.currentPlayerTurn = 0;

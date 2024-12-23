@@ -1,5 +1,8 @@
 package org.example.projet4dx.model.gameEngine.utils;
 
+/**
+ * Represents a set of coordinates in a two-dimensional space.
+ */
 public class Coordinates {
     private int x;
     private int y;

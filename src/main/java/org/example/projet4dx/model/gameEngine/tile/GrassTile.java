@@ -1,6 +1,5 @@
 package org.example.projet4dx.model.gameEngine.tile;
 
-import org.example.projet4dx.model.gameEngine.PlayerDTO;
 import org.example.projet4dx.model.gameEngine.Soldier;
 
 /**
@@ -11,7 +10,6 @@ public class GrassTile implements ITileType{
 
     @Override
     public void use() {
-        return;
     }
 
     @Override

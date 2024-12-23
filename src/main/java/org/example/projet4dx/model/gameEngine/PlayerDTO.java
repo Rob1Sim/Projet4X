@@ -2,6 +2,9 @@ package org.example.projet4dx.model.gameEngine;
 
 import org.example.projet4dx.model.Player;
 import org.example.projet4dx.model.gameEngine.engine.GameInstance;
+import org.example.projet4dx.model.gameEngine.engine.event.GameEvent;
+import org.example.projet4dx.model.gameEngine.engine.event.GameEventManager;
+import org.example.projet4dx.model.gameEngine.engine.event.GameEventType;
 import org.example.projet4dx.model.gameEngine.tile.Tile;
 
 import java.util.ArrayList;
@@ -49,11 +52,14 @@ public class PlayerDTO {
             Tile spawnCoordinates = GameInstance.getInstance().getMap().getAnEmptyTile();
             if (spawnCoordinates != null) {
                 soldier.setCoordinates(spawnCoordinates.getCoordinates());
+                this.addSoldier(soldier);
+                GameEventManager.getInstance().notifyGameEvent(new GameEvent(GameEventType.SYSTEM, this.getLogin()+" a recruté un nouveau soldat !"));
+                this.productionPoint -=15;
             }else {
-                throw new IllegalStateException("No empty tile available for spawning soldier");
+                GameEventManager.getInstance().notifyGameEvent(new GameEvent(GameEventType.SYSTEM, "Il n'y a plus assez de place pour un nouveau soldat !"));
             }
         }else {
-            throw new IllegalStateException("No production point available");
+            GameEventManager.getInstance().notifyGameEvent(new GameEvent(GameEventType.SYSTEM, this.getLogin()+" tu n'as pas assez de points de production pour recruter un nouveau soldat !"));
         }
     }
 
@@ -79,9 +85,6 @@ public class PlayerDTO {
         return productionPoint;
     }
 
-    public void setScore(int score) {
-        this.score = score;
-    }
 
     public void addScore(int score) {
         this.score += score;

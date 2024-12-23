@@ -60,12 +60,12 @@ public class CityTile implements ITileType, ICombat {
     @Override
     public boolean canCollide(Tile tile, Soldier soldier) {
         if (Soldier.getSoldierByCoordinates(tile.getCoordinates()) == null
-                && !isTaken && soldier.attack(this)) {//Sois la ville n'est pas prise donc tu peux l'attaquer pour la prendre
+                && !isTaken() && soldier.attack(this)) {//Sois la ville n'est pas prise donc tu peux l'attaquer pour la prendre
             GameEventManager.getInstance().notifyGameEvent(new GameEvent(GameEventType.ACTION, player.getLogin() + " prends une ville !"));
             return true;
         }
         //Sois la ville est prise par ton joueur donc tu peux te ballader dessus, sinon tu ne peux pas
-        return isTaken && player == soldier.getPlayerDTO();
+        return isTaken() && player == soldier.getPlayerDTO();
 
     }
 
@@ -94,15 +94,6 @@ public class CityTile implements ITileType, ICombat {
      */
     public boolean isTaken() {
         return isTaken;
-    }
-
-    /**
-     * Sets the flag indicating whether the city tile is taken by a player.
-     *
-     * @param taken true if the city tile is taken, false otherwise
-     */
-    public void setTaken(boolean taken) {
-        isTaken = taken;
     }
 
     /**
