@@ -1,7 +1,7 @@
 package org.example.projet4dx.model.gameEngine;
 
-import org.example.projet4dx.model.GameInstance;
 import org.example.projet4dx.model.Player;
+import org.example.projet4dx.model.gameEngine.engine.GameInstance;
 import org.example.projet4dx.model.gameEngine.tile.Tile;
 
 import java.util.ArrayList;
@@ -81,6 +81,10 @@ public class PlayerDTO {
 
     public void setScore(int score) {
         this.score = score;
+    }
+
+    public void addScore(int score) {
+        this.score += score;
     }
 
     public void setProductionPoint(int productionPoint) {

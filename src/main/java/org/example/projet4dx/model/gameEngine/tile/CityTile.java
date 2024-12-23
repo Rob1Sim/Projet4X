@@ -3,6 +3,9 @@ package org.example.projet4dx.model.gameEngine.tile;
 import org.example.projet4dx.model.gameEngine.ICombat;
 import org.example.projet4dx.model.gameEngine.PlayerDTO;
 import org.example.projet4dx.model.gameEngine.Soldier;
+import org.example.projet4dx.model.gameEngine.engine.event.GameEvent;
+import org.example.projet4dx.model.gameEngine.engine.event.GameEventManager;
+import org.example.projet4dx.model.gameEngine.engine.event.GameEventType;
 
 /**
  * Represents a City Tile within the game.
@@ -40,8 +43,10 @@ public class CityTile implements ITileType, ICombat {
      */
     @Override
     public void use() {
+        int productionPoint = 5;
         if (player != null) {
-            player.addProductionPoint(5);
+            GameEventManager.getInstance().notifyGameEvent(new GameEvent(GameEventType.ACTION,player.getLogin()+" récupère "+productionPoint+" points de production !"));
+            player.addProductionPoint(productionPoint);
         }
     }
 
@@ -55,8 +60,10 @@ public class CityTile implements ITileType, ICombat {
     @Override
     public boolean canCollide(Tile tile, Soldier soldier) {
         if (Soldier.getSoldierByCoordinates(tile.getCoordinates()) == null
-                && !isTaken && soldier.attack(this)) //Sois la ville n'est pas prise donc tu peux l'attaquer pour la prendre
+                && !isTaken && soldier.attack(this)) {//Sois la ville n'est pas prise donc tu peux l'attaquer pour la prendre
+            GameEventManager.getInstance().notifyGameEvent(new GameEvent(GameEventType.ACTION, player.getLogin() + " prends une ville !"));
             return true;
+        }
         //Sois la ville est prise par ton joueur donc tu peux te ballader dessus, sinon tu ne peux pas
         return isTaken && player == soldier.getPlayerDTO();
 
@@ -98,17 +105,37 @@ public class CityTile implements ITileType, ICombat {
         isTaken = taken;
     }
 
+    /**
+     * Reduces the defend points of the CityTile by the specified damage amount.
+     *
+     * @param damage The amount of damage to apply to the CityTile's defend points.
+     * @param soldier The Soldier inflicting the damage.
+     */
     @Override
     public void takeDamage(int damage, Soldier soldier) {
         defendPoint -= damage;
+
         if (defendPoint <= 0) {
             isTaken = true;
             player = soldier.getPlayerDTO();
-        }
+
+            int scoreWin = 100;
+            player.addScore(scoreWin);
+
+            GameEventManager.getInstance().notifyGameEvent(new GameEvent(GameEventType.ACTION,"La cité est tombée aux mains de "+player.getLogin()+" ! Il gagne "+scoreWin+" points."));
+
+
+        }else
+            GameEventManager.getInstance().notifyGameEvent(new GameEvent(GameEventType.ACTION,player.getLogin()+" attaque  "+this.getName()+" ! Mais il lui reste encore "+defendPoint+" points de défense!"));
     }
 
     @Override
     public int getHP() {
         return defendPoint;
+    }
+
+    @Override
+    public String getName() {
+        return "une ville";
     }
 }

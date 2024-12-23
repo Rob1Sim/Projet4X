@@ -1,6 +1,6 @@
 package org.example.projet4dx.model.gameEngine.tile;
 
-import org.example.projet4dx.model.gameEngine.Coordinates;
+import org.example.projet4dx.model.gameEngine.utils.Coordinates;
 import org.example.projet4dx.model.gameEngine.Soldier;
 
 public class Tile {

@@ -1,6 +1,7 @@
-package org.example.projet4dx.model.gameEngine;
+package org.example.projet4dx.model.gameEngine.tile;
 
-import org.example.projet4dx.model.gameEngine.tile.*;
+import org.example.projet4dx.model.gameEngine.Soldier;
+import org.example.projet4dx.model.gameEngine.utils.Coordinates;
 
 import java.util.ArrayList;
 import java.util.List;

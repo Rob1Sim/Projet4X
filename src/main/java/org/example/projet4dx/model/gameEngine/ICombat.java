@@ -9,4 +9,5 @@ public interface ICombat {
      */
     void takeDamage(int damage, Soldier soldier);
     int getHP();
+    String getName();
 }

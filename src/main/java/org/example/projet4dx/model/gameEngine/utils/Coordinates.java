@@ -1,4 +1,4 @@
-package org.example.projet4dx.model.gameEngine;
+package org.example.projet4dx.model.gameEngine.utils;
 
 public class Coordinates {
     private int x;
