@@ -118,15 +118,25 @@ public class GameInstance {
         return allSoldiers;
     }
 
+
     /**
-     * Executes a static action for a given Soldier based on the current game state.
+     * Checks if the Soldier is on a ForestTile and triggers the use() method of the tile.
      *
-     * @param soldier the Soldier object for which the action should be executed
+     * @param soldier the Soldier object to check if on a ForestTile
      */
-    public static void staticSoldierAction(Soldier soldier) {
+    public static void useForestAction(Soldier soldier) {
         if (GameInstance.getInstance().getMap().getTileAtCoord(soldier.getCoordinates()).getType() instanceof ForestTile) {
             GameInstance.getInstance().getMap().getTileAtCoord(soldier.getCoordinates()).getType().use();
-        }else if (soldier.getHP() <= Soldier.MAX_HP) {
+        }
+    }
+
+    /**
+     * Heals the specified Soldier by a random amount of HP based on a probability.
+     *
+     * @param soldier the Soldier object to be healed
+     */
+    public static void healSoldierAction(Soldier soldier) {
+        if (soldier.getHP() <= Soldier.MAX_HP) {
             Random random = new Random();
             int healAmount = random.nextInt(3) + 1;
             int probability = random.nextInt(100);
