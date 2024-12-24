@@ -24,9 +24,9 @@ public class PlayerDTO {
     public PlayerDTO(Player player) {
         this.login = player.getLogin();
         this.score = 0;
-        this.productionPoint = 0;
+        this.productionPoint = 15;
         this.soldiers = new ArrayList<>();
-        soldiers.add(new Soldier(this));
+        recruiteSoldier();
     }
 
     private void addSoldier(Soldier soldier) {

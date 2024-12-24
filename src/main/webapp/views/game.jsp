@@ -1,7 +1,8 @@
 <%@ page import="org.example.projet4dx.model.gameEngine.tile.Map" %>
 <%@ page import="org.example.projet4dx.model.gameEngine.utils.Coordinates" %>
 <%@ page import="java.util.List" %>
-<%@ page import="org.example.projet4dx.model.gameEngine.PlayerDTO" %><%--
+<%@ page import="org.example.projet4dx.model.gameEngine.PlayerDTO" %>
+<%@ page import="org.example.projet4dx.model.gameEngine.Soldier" %><%--
   Created by IntelliJ IDEA.
   User: robis
   Date: 24/12/2024
@@ -21,8 +22,21 @@
             <%
                 for (int y = 0; y < map.getHeight(); y++){
                       %>
-                    <td class="c-<%=y%>">
-                        <img src="${pageContext.request.contextPath}/assets/images/icons/Small/<%=map.getTileAtCoord(new Coordinates(x,y)).getImage()%>" alt="icone">
+                    <td class="c-<%=y%> case">
+                        <img class="background_img" src="${pageContext.request.contextPath}/assets/images/icons/Small/<%=map.getTileAtCoord(new Coordinates(x,y)).getImage()%>" alt="icone">
+                        <%
+                            List<Soldier> soldiers = (List<Soldier>) request.getAttribute("soldiers");
+                            if (soldiers != null){
+                                for (Soldier soldat : soldiers) {
+                                    if (soldat.getCoordinates().getX() == x && soldat.getCoordinates().getY() == y) {
+                                        %>
+                                <img src="${pageContext.request.contextPath}/assets/images/icons/Small/soldier.png" class='foreground_img' alt='Soldat' />
+                                <%
+                                    break;
+                                    }
+                                }
+                            }
+                                %>
                     </td>
                     <%
                 }
