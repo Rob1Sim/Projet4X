@@ -19,7 +19,7 @@
             <a href="#">4X</a>
         </div>
         <ul class="nav-links">
-            <li><a href="#" class="link-btn">Partie</a></li>
+            <li><a href="${pageContext.request.contextPath}/game" class="link-btn">Partie</a></li>
             <li><a href="${pageContext.request.contextPath}/profile"  class="link-btn">Profile</a></li>
             <% Player loggedInUser = (Player) request.getAttribute("currentPlayer");%>
             <li class="greeting">

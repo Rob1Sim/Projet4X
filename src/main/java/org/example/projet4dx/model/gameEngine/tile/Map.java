@@ -24,8 +24,8 @@ public class Map {
      * Each Tile is initialized with a random type and image.
      */
     public Map (){
-        width = 10;
-        height = 10;
+        width = 8;
+        height = 8;
         tiles = new ArrayList<>();
         Random rand = new Random();
         for ( int x = 0; x < width; x++ ) {
@@ -47,15 +47,15 @@ public class Map {
     private Tile getRandomTileType(int x, int y, Random rand) {
         Tile newTile = new Tile(x,y,null,"");
         int index = rand.nextInt(100);
-        if (index <= 15) {
+        if (index <= 5) {
             newTile.setType(new CityTile(20));
             newTile.setImage("city.png");
-        }else if (index <=35) {
+        }else if (index <=15) {
             newTile.setType(new ForestTile());
             newTile.setImage("forest.png");
         }else if(index <=85 ) {
             newTile.setType(new GrassTile());
-            newTile.setImage("");
+            newTile.setImage("grass.png");
         }else{
             newTile.setType(new MountainTile());
             newTile.setImage("mountain.png");

@@ -40,6 +40,11 @@ public class GameController extends HttpServlet {
             //TODO: Penser à set CurrentPlayerGame à null à la fin d'une partie
 
             request.setAttribute("gameMap", gameInstance.getMap());
+            request.setAttribute("players", gameInstance.getPlayers());
+            request.setAttribute("playerScore", playerDTO.getScore());
+            request.setAttribute("productionPoints", playerDTO.getProductionPoint());
+            request.setAttribute("playerTurn", gameInstance.getCurrentPlayer().getLogin());
+
             DisplayLayoutUtils.displayLayout("Partie","game.jsp",request,response);
         }
     }

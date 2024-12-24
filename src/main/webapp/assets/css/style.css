@@ -181,13 +181,23 @@ main{
     display: flex;
     flex-direction: column;
     height: 100%;
-    width: 33%;
 }
 
+.game-panel{
+    width: 40%;
+    padding: 1vh 1vw;
+}
 .players-info>ul>li{
-    text-decoration: none;
+    list-style: none;
 }
-
+table{
+    background-color: #689a10;
+    border: #91AC8F solid 5px;
+}
+td{
+    width: 64px;
+    height: 68px;
+}
 .textbox-send{
     display: flex;
 }

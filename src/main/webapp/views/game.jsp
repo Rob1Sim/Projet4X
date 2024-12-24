@@ -1,4 +1,7 @@
-<%--
+<%@ page import="org.example.projet4dx.model.gameEngine.tile.Map" %>
+<%@ page import="org.example.projet4dx.model.gameEngine.utils.Coordinates" %>
+<%@ page import="java.util.List" %>
+<%@ page import="org.example.projet4dx.model.gameEngine.PlayerDTO" %><%--
   Created by IntelliJ IDEA.
   User: robis
   Date: 24/12/2024
@@ -11,7 +14,21 @@
         <div class="game-grid">
             <!-- TODO:Implémenter la grille -->
             <table>
-
+            <% Map map = (Map)request.getAttribute("gameMap");
+                for (int x = 0; x < map.getWidth(); x++){
+                    %>
+                <tr class="l-<%=x%>">
+            <%
+                for (int y = 0; y < map.getHeight(); y++){
+                      %>
+                    <td class="c-<%=y%>">
+                        <img src="${pageContext.request.contextPath}/assets/images/icons/Small/<%=map.getTileAtCoord(new Coordinates(x,y)).getImage()%>" alt="icone">
+                    </td>
+                    <%
+                }
+                }
+            %>
+                </tr>
             </table>
         </div>
         <div class="game-control">
@@ -34,6 +51,8 @@
                     <button class="g-btn">Soin</button>
                     <button class="g-btn">Déforester</button>
                     <button class="g-btn">Recruter</button>
+                    <button class="g-btn">Fin de tour</button>
+
                 </div>
             </div>
         </div>
@@ -43,26 +62,27 @@
             <h3>Joueurs</h3>
             <!-- TODO:Implémenter la listes des joueurs -->
             <ul>
-                <li>Gaby</li>
-                <li>Manu</li>
-                <li>Michel</li>
-                <li>François</li>
+            <% List<PlayerDTO> players = (List<PlayerDTO>) request.getAttribute("players");
+                if (players != null){
+                    for(PlayerDTO player : players){%>
+                        <li><%=player.getLogin()%></li><%
+                    }
+                }
+                %>
             </ul>
         </div>
         <div class="player-score-round">
             <div>
                 <h3>Tour</h3>
-                Manu
+                <p id="playerTurn">${playerTurn}</p>
             </div>
             <div>
                 <h3>Scores</h3>
-                <!-- TODO:Implémenter le score -->
-                2300
+                <p id="playerScore">${playerScore}</p>
             </div>
             <div>
                 <h3>Points de productions</h3>
-                <!-- TODO:Implémenter les points de production -->
-                2300
+                <p id="playerProductionPoint">${productionPoints}</p>
             </div>
         </div>
     </div>
