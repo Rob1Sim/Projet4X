@@ -10,21 +10,31 @@
     <div class="game-panel">
         <div class="game-grid">
             <!-- TODO:Implémenter la grille -->
+            <table>
 
+            </table>
         </div>
         <div class="game-control">
             <!-- TODO:Implémenter les actions -->
             <h3>Action</h3>
-            <div>
-                <button class="g-btn">Nord</button>
-                <button class="g-btn">Sud</button>
-                <button class="g-btn">Ouest</button>
-                <button class="g-btn">Est</button>
-            </div>
-            <div>
-                <button class="g-btn">Soin</button>
-                <button class="g-btn">Déforester</button>
-                <button class="g-btn">Recruter</button>
+            <div class="control-btn">
+                <div class="control-btn-display">
+                    <div class="sn-btn">
+                        <button class="g-btn">Nord</button>
+                    </div>
+                    <div class="ew-btn">
+                        <button class="g-btn">Ouest</button>
+                        <button class="g-btn">Est</button>
+                    </div>
+                    <div class="sn-btn">
+                        <button class="g-btn">Sud</button>
+                    </div>
+                </div>
+                <div class="action-btn">
+                    <button class="g-btn">Soin</button>
+                    <button class="g-btn">Déforester</button>
+                    <button class="g-btn">Recruter</button>
+                </div>
             </div>
         </div>
     </div>
@@ -42,6 +52,7 @@
         <div class="player-score-round">
             <div>
                 <h3>Tour</h3>
+                Manu
             </div>
             <div>
                 <h3>Scores</h3>
@@ -59,7 +70,9 @@
         <h3>Message</h3>
         <div id="messages" style="border: 1px solid #000; height: 30vh; overflow-y: auto; padding: 1vw;">
         </div>
-        <input type="text" id="messageInput" placeholder="Enter your message" />
-        <button class="g-btn" onclick="sendMessage()">Send</button>
+        <div class="textbox-send">
+            <input type="text" id="messageInput" placeholder="Enter your message" />
+            <button class="g-btn" onclick="sendMessage()">Send</button>
+        </div>
     </div>
 </div>

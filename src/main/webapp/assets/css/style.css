@@ -174,12 +174,44 @@ main{
     display: flex;
     width: 95%;
     height: 100%;
+    justify-content: space-between;
 }
 
 .game-panel, .game-info, .game-message{
     display: flex;
     flex-direction: column;
     height: 100%;
+    width: 33%;
+}
+
+.players-info>ul>li{
+    text-decoration: none;
+}
+
+.textbox-send{
+    display: flex;
+}
+.control-btn{
+    display: flex;
+    gap: 1vw;
+}
+.action-btn{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.5vw;
+}
+.ew-btn{
+    display: flex;
+}
+.sn-btn{
+    display: flex;
+    justify-content: center;
+}
+.control-btn-display{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 h3{
@@ -190,11 +222,11 @@ h3{
     background-color: #4B5945; /* Green */
     border: none;
     color: white;
-    padding: 15px 32px;
+    padding: 1vh 2vw;
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 16px;
+    font-size: 1em;
     transition: background-color 0.2s;
 }
 

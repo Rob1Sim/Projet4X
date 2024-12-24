@@ -12,21 +12,24 @@ import java.io.IOException;
 public class AuthenticationUtil {
     private final static String LOGGED_USER = "LOGGED_USER";
     private final static String CURRENT_PLAYER_GAME = "CURRENT_PLAYER_GAME";
+
     /**
-     * Redirects the user to the authentication page if the user is not logged in.
+     * Redirects the user to the authentication page if the player is not logged in.
      *
-     * @param request  the {@link HttpServletRequest} object
-     * @param response the {@link HttpServletResponse} object
-     * @throws ServletException if the request could not be handled
-     * @throws IOException      if an I/O error occurs during the redirection
+     * @param request  the HttpServletRequest object
+     * @param response the HttpServletResponse object
+     * @return true if the player is not logged in and redirection is performed, false otherwise
+     * @throws ServletException if there is an issue with the servlet
+     * @throws IOException      if there is an issue with input/output
      */
-    public static void redirectToAuthentication(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public static boolean redirectToAuthentication(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         Player player = (Player) session.getAttribute(LOGGED_USER);
         if ( player == null){
             request.getRequestDispatcher("/login").forward(request,response);
-            return;
+            return true;
         }
+        return false;
     }
 
     /**

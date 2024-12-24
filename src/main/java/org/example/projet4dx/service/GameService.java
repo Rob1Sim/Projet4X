@@ -22,12 +22,16 @@ public class GameService {
         return gameDAO.getById(Game.class, id);
     }
 
+
     /**
-     * Creates a new Game entity with the current date and persists it using the associated GameDAO.
+     * Creates a new game instance with the current date and persists it using the GameDAO.
+     *
+     * @return the newly created Game object
      */
-    public void createGame() {
+    public Game createGame() {
         Game game = new Game();
         game.setDate(LocalDate.now());
         gameDAO.create(game);
+        return game;
     }
 }

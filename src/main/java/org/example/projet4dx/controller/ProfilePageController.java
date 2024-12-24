@@ -6,7 +6,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import org.example.projet4dx.model.Player;
 import org.example.projet4dx.service.PlayerService;
 import org.example.projet4dx.util.AuthenticationUtil;
@@ -22,7 +21,9 @@ public class ProfilePageController extends HttpServlet {
         EntityManager em = PersistenceManager.getEntityManager();
         PlayerService playerService = new PlayerService(em);
 
-        AuthenticationUtil.redirectToAuthentication(request, response);
+        if (AuthenticationUtil.redirectToAuthentication(request, response)){
+            return;
+        }
         Player player = AuthenticationUtil.getCurrentPlayer(request);
 
         request.setAttribute("meanScore",playerService.getPlayerMeanScore(em,player));

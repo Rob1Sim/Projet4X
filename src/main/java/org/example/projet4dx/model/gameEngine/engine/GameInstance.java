@@ -1,5 +1,6 @@
 package org.example.projet4dx.model.gameEngine.engine;
 
+import jakarta.persistence.EntityManager;
 import org.example.projet4dx.model.Game;
 import org.example.projet4dx.model.gameEngine.*;
 import org.example.projet4dx.model.gameEngine.engine.event.GameEvent;
@@ -9,6 +10,8 @@ import org.example.projet4dx.model.gameEngine.tile.ForestTile;
 import org.example.projet4dx.model.gameEngine.tile.Map;
 import org.example.projet4dx.model.gameEngine.utils.Coordinates;
 import org.example.projet4dx.model.gameEngine.utils.Direction;
+import org.example.projet4dx.service.GameService;
+import org.example.projet4dx.util.PersistenceManager;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -28,7 +31,8 @@ public class GameInstance {
 
 
     private GameInstance() {
-        game = new Game();
+        GameService gameService = new GameService(PersistenceManager.getEntityManager());
+        game = gameService.createGame();
         map = new Map();
         game.setDate(LocalDate.now());
         players = new ArrayList<>();

@@ -22,7 +22,9 @@ public class GameController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         GameInstance gameInstance = GameInstance.getInstance();
 
-        AuthenticationUtil.redirectToAuthentication(request,response);
+        if (AuthenticationUtil.redirectToAuthentication(request, response)){
+            return;
+        }
 
         Player player = AuthenticationUtil.getCurrentPlayer(request);
 
