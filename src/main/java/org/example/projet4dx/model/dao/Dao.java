@@ -72,16 +72,6 @@ public abstract class Dao<T> {
         }
     }
     /**
-     * Retrieves an entity of type T by its ID from the database.
-     *
-     * @param entityClass the entity instance used to determine the class type for lookup
-     * @param id the ID of the entity to retrieve
-     * @return the entity instance with the given ID, or null if not found
-     */
-    public T getById(Class<T> entityClass,long id){
-        return em.find(entityClass, id);
-    }
-    /**
      * Retrieves all entities of type T from the database.
      *
      * @return list of all entities of type T

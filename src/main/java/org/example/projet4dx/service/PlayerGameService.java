@@ -3,6 +3,7 @@ package org.example.projet4dx.service;
 import jakarta.persistence.EntityManager;
 import org.example.projet4dx.model.Game;
 import org.example.projet4dx.model.Player;
+import org.example.projet4dx.model.PlayerGameId;
 import org.example.projet4dx.model.dao.PlayerGameDao;
 import org.example.projet4dx.model.PlayerGame;
 
@@ -15,8 +16,8 @@ public class PlayerGameService {
         this.playerGameDao = new PlayerGameDao(em);
     }
 
-    public PlayerGame getPlayerGame(long id) {
-        return playerGameDao.getById(PlayerGame.class, id);
+    public PlayerGame getPlayerGame(PlayerGameId id) {
+        return playerGameDao.getById( id);
     }
 
     public List<PlayerGame> getAllPlayerGames() {
@@ -46,8 +47,8 @@ public class PlayerGameService {
      * @param id the ID of the player's game
      * @param score the new score to update for the player
      */
-    public void updatePlayerScore(long id, int score) {
-        PlayerGame playerGame = playerGameDao.getById(PlayerGame.class, id);
+    public void updatePlayerScore(PlayerGameId id, int score) {
+        PlayerGame playerGame = playerGameDao.getById(id);
         playerGame.setScore(score);
         playerGameDao.update(playerGame);
     }

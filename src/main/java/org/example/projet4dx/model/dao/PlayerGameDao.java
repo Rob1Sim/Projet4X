@@ -2,6 +2,7 @@ package org.example.projet4dx.model.dao;
 
 import jakarta.persistence.EntityManager;
 import org.example.projet4dx.model.PlayerGame;
+import org.example.projet4dx.model.PlayerGameId;
 
 import java.util.List;
 
@@ -33,5 +34,10 @@ public class PlayerGameDao extends Dao<PlayerGame> {
                         PlayerGame.class)
                 .setParameter("gameId", id)
                 .getResultList();
+    }
+
+
+    public PlayerGame getById(PlayerGameId id) {
+        return em.find(PlayerGame.class, id);
     }
 }

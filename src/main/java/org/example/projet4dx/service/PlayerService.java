@@ -2,8 +2,7 @@ package org.example.projet4dx.service;
 
 import jakarta.persistence.EntityManager;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
-import jakarta.websocket.Session;
+
 import org.example.projet4dx.model.PlayerGame;
 import org.example.projet4dx.model.dao.PlayerDAO;
 import org.example.projet4dx.model.Player;
@@ -37,15 +36,6 @@ public class PlayerService {
         return playerDAO.getAll();
     }
 
-    /**
-     * Retrieves a player entity by its ID.
-     *
-     * @param id the ID of the player to retrieve
-     * @return the player entity with the given ID, or null if not found
-     */
-    public Player getPlayerById(Long id) {
-        return playerDAO.getById(Player.class,id);
-    }
 
     /**
      * Registers a new player with the provided login and password.

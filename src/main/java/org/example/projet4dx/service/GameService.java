@@ -18,9 +18,6 @@ public class GameService {
         return gameDAO.getAll();
     }
 
-    public Game getGame(int id) {
-        return gameDAO.getById(Game.class, id);
-    }
 
 
     /**

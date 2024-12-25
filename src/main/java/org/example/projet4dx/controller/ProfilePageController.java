@@ -29,7 +29,7 @@ public class ProfilePageController extends HttpServlet {
         request.setAttribute("meanScore",playerService.getPlayerMeanScore(em,player));
         request.setAttribute("maxScore",playerService.getMaximumPlayerScore(em,player));
         request.setAttribute("minScore",playerService.getMinimumPlayerScore(em,player));
-        request.setAttribute("playerGameList",playerService.getPlayerGames(em,player));
+        request.setAttribute("playerGames",playerService.getPlayerGames(em,player));
 
         DisplayLayoutUtils.displayLayout("Profile","profilePage.jsp",request,response);
 
