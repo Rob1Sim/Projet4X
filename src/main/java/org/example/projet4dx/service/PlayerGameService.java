@@ -9,6 +9,9 @@ import org.example.projet4dx.model.PlayerGame;
 
 import java.util.List;
 
+/**
+ * Service class responsible for handling PlayerGame entities.
+ */
 public class PlayerGameService {
     private final PlayerGameDao playerGameDao;
 

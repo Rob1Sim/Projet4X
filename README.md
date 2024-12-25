@@ -93,7 +93,12 @@ Projet4DX
 - **Client-side** : HTML, CSS, JavaScript
 
 ---
-
+## **Documentation**
+La documentation web est peut être générer par la commande :
+```bash
+mvn javadoc:javadoc
+```
+Et est accessible dans le dossier target/site/apidocs/.
 
 ## **Technologies utilisées**
 - Via le websocket synchroniser les soldats à chaque tour

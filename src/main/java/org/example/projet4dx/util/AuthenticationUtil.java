@@ -10,6 +10,9 @@ import org.example.projet4dx.model.gameEngine.PlayerDTO;
 
 import java.io.IOException;
 
+/**
+ * Utility class for handling authentication-related operations in the application.
+ */
 public class AuthenticationUtil {
     public final static String LOGGED_USER = "LOGGED_USER";
     public final static String CURRENT_PLAYER_GAME = "CURRENT_PLAYER_GAME";

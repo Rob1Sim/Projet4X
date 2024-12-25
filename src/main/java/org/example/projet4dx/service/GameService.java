@@ -7,6 +7,9 @@ import org.example.projet4dx.model.Game;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * This class represents a service layer for managing Game entities.
+ */
 public class GameService {
     private final GameDAO gameDAO;
 
@@ -17,8 +20,6 @@ public class GameService {
     public List<Game> getAllGames() {
         return gameDAO.getAll();
     }
-
-
 
     /**
      * Creates a new game instance with the current date and persists it using the GameDAO.
