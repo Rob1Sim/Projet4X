@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.example.projet4dx.model.PlayerGameId;
 import org.example.projet4dx.model.gameEngine.engine.GameInstance;
 import org.example.projet4dx.model.Player;
 import org.example.projet4dx.model.PlayerGame;
@@ -28,12 +29,13 @@ public class GameController extends HttpServlet {
 
 
         Player player = AuthenticationUtil.getCurrentPlayer(request);
-        PlayerGame pg;
         PlayerDTO playerDTO;
-
-        if (AuthenticationUtil.getCurrentPlayerGame(request) == null){
-            PlayerGameService playerGameService = new PlayerGameService(PersistenceManager.getEntityManager());
-            pg = playerGameService.createPlayerGame(player, gameInstance.getGame());
+        PlayerGameService playerGameService = new PlayerGameService(PersistenceManager.getEntityManager());
+        PlayerGame pg = playerGameService.getPlayerGame(new PlayerGameId(player.getId(),GameInstance.getInstance().getGame().getId()));
+        if (AuthenticationUtil.getCurrentPlayerGame(request) == null ){
+            if (pg == null){
+                pg = playerGameService.createPlayerGame(player, gameInstance.getGame());
+            }
 
             playerDTO = new PlayerDTO(player);
             gameInstance.addPlayer(playerDTO);

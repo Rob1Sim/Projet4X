@@ -28,6 +28,10 @@ public class PlayerGameService {
         return playerGameDao.getByPlayerId(id);
     }
 
+    public List<PlayerGame> getPlayerGamesByGameId(long id) {
+        return playerGameDao.getByGameId(id);
+    }
+
     /**
      * Creates a new PlayerGame entity for the given Player and Game instances.
      *
