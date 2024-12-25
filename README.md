@@ -89,10 +89,21 @@ Projet4DX
 - **Langage** : Java (JDK 21)
 - **Framework** : Jakarta EE (Servlets et JSP)
 - **Serveur d'application** : Apache Tomcat 11
-- **Base de données** : SQLite
+- **Base de données** : MySQL
 - **Client-side** : HTML, CSS, JavaScript
 
 ---
+
+
+## **Technologies utilisées**
+- Via le websocket synchroniser les soldats à chaque tour
+- Sélectionner et mouvoir tous les soldats dans le front
+- Envoyer les changements des soldats via le websocket et appelé le backend en conséquence
+- Configurer les actions des soldats (+ limité le déplacement à une case de chaque soldats)
+- Configurer la fin de tour (et donc bloquer les joueurs à qui ce n'est pas le tour coté front)
+- Corriger les bugs de toutes les parties précédentes
+- Corriger les bugs du système de jeu qui n'a pas été testé
+- Polish en ajoutant du responsive
 
 
 

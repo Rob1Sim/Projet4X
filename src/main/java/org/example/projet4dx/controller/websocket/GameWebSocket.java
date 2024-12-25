@@ -33,6 +33,7 @@ public class GameWebSocket {
             playerSessions.add(playerSession);
             basicBroadcast(textToJsonSystemMessage(playerSession.getPlayerDTO().getLogin()+" à rejoins la partie !"));
             broadcastGameUpdate(session);
+            broadcastPlayersInfoUpdate();
         }else {
             System.out.println("La session a été fermé car elle le joueur n'était pas dans une partie !");
             session.close();
@@ -47,7 +48,7 @@ public class GameWebSocket {
             currentPlayerSession.leaveGame();
             basicBroadcast(textToJsonSystemMessage(currentPlayerSession.getPlayerDTO().getLogin() + " à quitter la partie !"));
             playerSessions.remove(currentPlayerSession);
-
+            broadcastPlayersInfoUpdate();
             if (sessions.isEmpty()) {
                 GameInstance.resetInstance();
             }
@@ -78,23 +79,35 @@ public class GameWebSocket {
     private static void broadcastGameUpdate(Session session) {
         JsonObject json = new JsonObject();
         json.addProperty("type", "update");
-
         JsonObject payload = new JsonObject();
-        JsonArray players = new JsonArray();
-        playerSessions.forEach(playerSession -> {
-            JsonObject player = new JsonObject();
-            player.addProperty("login", playerSession.getPlayerDTO().getLogin());
-            players.add(player);
-        });
 
         PlayerSession playerSession = getPlayerBySession(session);
-
-        payload.add("players", players);
         payload.addProperty("playerTurn", GameInstance.getInstance().getCurrentPlayer().getLogin());
         payload.addProperty("playerScore", playerSession.getPlayerDTO().getScore());
         payload.addProperty("productionPoints", playerSession.getPlayerDTO().getProductionPoint());
         json.add("payload", payload);
 
+        String jsonString = json.toString();
+        basicBroadcast(jsonString);
+    }
+
+    /**
+     * Broadcasts an update message containing players' information to all connected WebSocket sessions.
+     * The method iterates through the playerSessions list and constructs a JSON payload that includes the login name of each player.
+     * This information is then broadcasted to all WebSocket sessions using the basicBroadcast method.
+     */
+    public static void broadcastPlayersInfoUpdate(){
+        JsonObject json = new JsonObject();
+        JsonArray players = new JsonArray();
+        json.addProperty("type", "update");
+        JsonObject payload = new JsonObject();
+        playerSessions.forEach(playerSession -> {
+            JsonObject player = new JsonObject();
+            player.addProperty("login", playerSession.getPlayerDTO().getLogin());
+            players.add(player);
+        });
+        payload.add("players", players);
+        json.add("payload", payload);
         String jsonString = json.toString();
         basicBroadcast(jsonString);
     }
@@ -119,6 +132,7 @@ public class GameWebSocket {
                 basicBroadcast(textToJsonSystemMessage(playerSession.getPlayerDTO().getLogin()+": "+ text));
             }
             broadcastGameUpdate(session);
+            broadcastPlayersInfoUpdate();
         } catch (Exception e) {
             e.printStackTrace();
         }
