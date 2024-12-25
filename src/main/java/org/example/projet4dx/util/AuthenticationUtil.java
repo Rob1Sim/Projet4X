@@ -6,12 +6,14 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.example.projet4dx.model.Player;
 import org.example.projet4dx.model.PlayerGame;
+import org.example.projet4dx.model.gameEngine.PlayerDTO;
 
 import java.io.IOException;
 
 public class AuthenticationUtil {
-    private final static String LOGGED_USER = "LOGGED_USER";
-    private final static String CURRENT_PLAYER_GAME = "CURRENT_PLAYER_GAME";
+    public final static String LOGGED_USER = "LOGGED_USER";
+    public final static String CURRENT_PLAYER_GAME = "CURRENT_PLAYER_GAME";
+    public final static String CURRENT_PLAYER_DTO = "CURRENT_PLAYER_DTO";
 
     /**
      * Redirects the user to the authentication page if the player is not logged in.
@@ -43,6 +45,10 @@ public class AuthenticationUtil {
         return (Player) session.getAttribute(LOGGED_USER);
     }
 
+    public static Player getCurrentPlayer(HttpSession session) {
+        return (Player) session.getAttribute(LOGGED_USER);
+    }
+
     /**
      * Saves the current player in the session.
      *
@@ -65,6 +71,25 @@ public class AuthenticationUtil {
         return (PlayerGame) session.getAttribute(CURRENT_PLAYER_GAME);
     }
 
+    public static PlayerGame getCurrentPlayerGame(HttpSession session) {
+        return (PlayerGame) session.getAttribute(CURRENT_PLAYER_GAME);
+    }
+
+    /**
+     * Retrieves the current PlayerGame DTO associated with the player from the session.
+     *
+     * @param request the HttpServletRequest object from which the session is accessed
+     * @return the current Player DTO (null if none set)
+     */
+    public static PlayerDTO getCurrentPlayerDTO(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        return (PlayerDTO) session.getAttribute(CURRENT_PLAYER_DTO);
+    }
+
+    public static PlayerDTO getCurrentPlayerDTO(HttpSession session) {
+        return (PlayerDTO) session.getAttribute(CURRENT_PLAYER_DTO);
+    }
+
     /**
      * Saves the current player's game in the session.
      *
@@ -77,12 +102,54 @@ public class AuthenticationUtil {
     }
 
     /**
+     * Resets the current player's game information stored in the HttpSession.
+     *
+     * @param session the HttpSession object from which to remove the current player's game information
+     */
+    public static void resetCurrentPlayerGame(HttpSession session) {
+        session.removeAttribute(CURRENT_PLAYER_GAME);
+    }
+
+    /**
+     * Resets the current PlayerDTO in the HttpSession by removing the attribute with the key CURRENT_PLAYER_DTO.
+     *
+     * @param session the HttpSession from which to remove the current PlayerDTO
+     */
+    public static void resetCurrentPlayerDTO(HttpSession session) {
+        session.removeAttribute(CURRENT_PLAYER_DTO);
+    }
+
+    /**
+     * Saves the current player DTO in the session.
+     *
+     * @param playerDTO the PlayerDTO object to be saved as the current player DTO
+     * @param request the HttpServletRequest object used to access the session
+     */
+    public static void saveCurrentPlayerDTO(PlayerDTO playerDTO, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        session.setAttribute(CURRENT_PLAYER_DTO, playerDTO);
+    }
+
+    /**
+     * Removes the current PlayerDTO from the provided HttpSession.
+     *
+     * @param session the HttpSession from which to remove the current PlayerDTO
+     */
+    public static void removeCurrentPlayerDTO(HttpSession session) {
+        session.removeAttribute(CURRENT_PLAYER_DTO);
+    }
+
+    /**
      * Removes the current PlayerGame associated with the player from the session.
      *
      * @param request the HttpServletRequest object from which the session is accessed
      */
     public static void removeCurrentPlayerGame(HttpServletRequest request) {
         HttpSession session = request.getSession();
+        session.removeAttribute(CURRENT_PLAYER_GAME);
+    }
+
+    public static void removeCurrentPlayerGame(HttpSession session) {
         session.removeAttribute(CURRENT_PLAYER_GAME);
     }
 }

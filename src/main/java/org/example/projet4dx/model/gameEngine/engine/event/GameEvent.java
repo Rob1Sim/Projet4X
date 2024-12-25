@@ -53,4 +53,9 @@ public class GameEvent {
     public void setMessage(String message) {
         this.message = message;
     }
+
+    @Override
+    public String toString() {
+        return eventName + ": " + message;
+    }
 }

@@ -110,3 +110,5 @@
         </div>
     </div>
 </div>
+<script src="${pageContext.request.contextPath}/assets/js/gameSocket.js"></script>
+

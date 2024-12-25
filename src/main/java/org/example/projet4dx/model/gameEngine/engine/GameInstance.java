@@ -52,6 +52,10 @@ public class GameInstance {
         return instance;
     }
 
+    public static synchronized boolean isCreated() {
+        return instance != null;
+    }
+
     /**
      * Adds a player to the game session. Players represent participants in the game.
      *

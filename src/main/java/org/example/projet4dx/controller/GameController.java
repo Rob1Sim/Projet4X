@@ -20,33 +20,36 @@ import java.io.IOException;
 public class GameController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        GameInstance gameInstance = GameInstance.getInstance();
-
         if (AuthenticationUtil.redirectToAuthentication(request, response)){
             return;
         }
 
+        GameInstance gameInstance = GameInstance.getInstance();
+
+
         Player player = AuthenticationUtil.getCurrentPlayer(request);
+        PlayerGame pg;
+        PlayerDTO playerDTO;
 
         if (AuthenticationUtil.getCurrentPlayerGame(request) == null){
             PlayerGameService playerGameService = new PlayerGameService(PersistenceManager.getEntityManager());
-            PlayerGame pg = playerGameService.createPlayerGame(player, gameInstance.getGame());
-            //TODO: Enregistré les scores à la fin de la partie/tour
+            pg = playerGameService.createPlayerGame(player, gameInstance.getGame());
 
-            PlayerDTO playerDTO = new PlayerDTO(player);
+            playerDTO = new PlayerDTO(player);
             gameInstance.addPlayer(playerDTO);
 
             AuthenticationUtil.saveCurrentPlayerGame(pg,request);
-            //TODO: Penser à set CurrentPlayerGame à null à la fin d'une partie
-
-            request.setAttribute("gameMap", gameInstance.getMap());
-            request.setAttribute("players", gameInstance.getPlayers());
-            request.setAttribute("playerScore", playerDTO.getScore());
-            request.setAttribute("productionPoints", playerDTO.getProductionPoint());
-            request.setAttribute("playerTurn", gameInstance.getCurrentPlayer().getLogin());
-            request.setAttribute("soldiers", gameInstance.getAllSoldiers());
-
-            DisplayLayoutUtils.displayLayout("Partie","game.jsp",request,response);
+            AuthenticationUtil.saveCurrentPlayerDTO(playerDTO,request);
+        }else {
+            playerDTO = AuthenticationUtil.getCurrentPlayerDTO(request);
         }
+        request.setAttribute("gameMap", gameInstance.getMap());
+        request.setAttribute("players", gameInstance.getPlayers());
+        request.setAttribute("playerScore", playerDTO.getScore());
+        request.setAttribute("productionPoints", playerDTO.getProductionPoint());
+        request.setAttribute("playerTurn", gameInstance.getCurrentPlayer().getLogin());
+        request.setAttribute("soldiers", gameInstance.getAllSoldiers());
+
+        DisplayLayoutUtils.displayLayout("Partie","game.jsp",request,response);
     }
 }

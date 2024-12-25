@@ -39,7 +39,7 @@
     </div>
 </nav>
     <main><jsp:include page="${content}" /></main>
-    <script src="../assets/js/animation.js"></script>
+    <script src="${pageContext.request.contextPath}/assets/js/animation.js"></script>
 </body>
 </html>
 

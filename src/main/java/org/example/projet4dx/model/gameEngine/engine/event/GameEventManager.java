@@ -41,6 +41,15 @@ public class GameEventManager {
     }
 
     /**
+     * Removes the specified GameEventListener from the list of listeners.
+     *
+     * @param listener the GameEventListener to be removed
+     */
+    public void removeGameEventListener(GameEventListener listener) {
+        listeners.remove(listener);
+    }
+
+    /**
      * Notifies all registered GameEventListeners of a game event occurrence.
      *
      * @param event the GameEvent object representing the game event that occurred
