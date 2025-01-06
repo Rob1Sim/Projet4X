@@ -51,6 +51,7 @@ public class GameController extends HttpServlet {
         request.setAttribute("productionPoints", playerDTO.getProductionPoint());
         request.setAttribute("playerTurn", gameInstance.getCurrentPlayer().getLogin());
         request.setAttribute("soldiers", gameInstance.getAllSoldiers());
+        request.setAttribute("playerSessionLogin", AuthenticationUtil.getCurrentPlayer(request).getLogin());
 
         DisplayLayoutUtils.displayLayout("Partie","game.jsp",request,response);
     }

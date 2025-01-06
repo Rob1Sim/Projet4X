@@ -7,9 +7,11 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.websocket.*;
 import jakarta.websocket.server.ServerEndpoint;
 import org.example.projet4dx.model.gameEngine.PlayerDTO;
+import org.example.projet4dx.model.gameEngine.Soldier;
 import org.example.projet4dx.model.gameEngine.engine.GameInstance;
 import org.example.projet4dx.model.gameEngine.engine.event.GameEventType;
-import org.example.projet4dx.util.AuthenticationUtil;
+import org.example.projet4dx.model.gameEngine.utils.Direction;
+import org.example.projet4dx.util.StringifyUtil;
 
 import java.io.IOException;
 import java.util.Set;
@@ -85,6 +87,7 @@ public class GameWebSocket {
         payload.addProperty("playerTurn", GameInstance.getInstance().getCurrentPlayer().getLogin());
         payload.addProperty("playerScore", playerSession.getPlayerDTO().getScore());
         payload.addProperty("productionPoints", playerSession.getPlayerDTO().getProductionPoint());
+        payload.add("soldiers", StringifyUtil.jsonifySoldierList(GameInstance.getInstance().getAllSoldiers()));
         json.add("payload", payload);
 
         String jsonString = json.toString();
@@ -118,18 +121,30 @@ public class GameWebSocket {
             System.out.println("Un message est reçue");
             JsonObject json = JsonParser.parseString(message).getAsJsonObject();
 
-            if (!json.has("type") || !json.has("text")) { //Ajouter d'autre validations
+            if (!json.has("type")) {
                 throw new IllegalArgumentException("Message JSON mal formé : " + message);
             }
 
             String type = json.get("type").getAsString();
+            PlayerSession playerSession = getPlayerBySession(session);
 
             if ("message".equals(type)) {
 
-                PlayerSession playerSession = getPlayerBySession(session);
 
                 String text = json.get("text").getAsString();
                 basicBroadcast(textToJsonSystemMessage(playerSession.getPlayerDTO().getLogin()+": "+ text));
+            }
+
+            if ("moveSoldier".equals(type)) {
+                String soldierId = json.get("soldierId").getAsString();
+                String direction = json.get("direction").getAsString();
+                Soldier soldier = playerSession.getPlayerDTO().getSoldierById(soldierId);
+
+                Direction directionEnum = Direction.getDirectionByName(direction);
+                if (directionEnum == null) {
+                    throw new IllegalArgumentException("Direction not recognized: " + direction);
+                }
+                GameInstance.getInstance().moveSoldier(soldier, directionEnum);
             }
             broadcastGameUpdate(session);
             broadcastPlayersInfoUpdate();

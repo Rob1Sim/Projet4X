@@ -2,41 +2,27 @@
 <%@ page import="org.example.projet4dx.model.gameEngine.utils.Coordinates" %>
 <%@ page import="java.util.List" %>
 <%@ page import="org.example.projet4dx.model.gameEngine.PlayerDTO" %>
-<%@ page import="org.example.projet4dx.model.gameEngine.Soldier" %><%--
   Created by IntelliJ IDEA.
   User: robis
   Date: 24/12/2024
   Time: 11:02
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <div class="game-page">
     <div class="game-panel">
         <div class="game-grid">
             <!-- TODO:Implémenter la grille -->
-            <table>
+            <table id="table">
             <% Map map = (Map)request.getAttribute("gameMap");
-                for (int x = 0; x < map.getWidth(); x++){
-                    %>
-                <tr class="l-<%=x%>">
-            <%
                 for (int y = 0; y < map.getHeight(); y++){
+                    %>
+                <tr id="l-<%=y%>">
+            <%
+                for (int x = 0; x < map.getWidth(); x++){
                       %>
-                    <td class="c-<%=y%> case">
-                        <img class="background_img" src="${pageContext.request.contextPath}/assets/images/icons/Small/<%=map.getTileAtCoord(new Coordinates(x,y)).getImage()%>" alt="icone">
-                        <%
-                            List<Soldier> soldiers = (List<Soldier>) request.getAttribute("soldiers");
-                            if (soldiers != null){
-                                for (Soldier soldat : soldiers) {
-                                    if (soldat.getCoordinates().getX() == x && soldat.getCoordinates().getY() == y) {
-                                        %>
-                                <img src="${pageContext.request.contextPath}/assets/images/icons/Small/soldier.png" class='foreground_img' alt='Soldat' />
-                                <%
-                                    break;
-                                    }
-                                }
-                            }
-                                %>
+                    <td id="<%=x%>-<%=y%>" class="case">
+                        <img class="background_img case" src="${pageContext.request.contextPath}/assets/images/icons/Small/<%=map.getTileAtCoord(new Coordinates(x,y)).getImage()%>" alt="icone">
                     </td>
                     <%
                 }
@@ -51,14 +37,14 @@
             <div class="control-btn">
                 <div class="control-btn-display">
                     <div class="sn-btn">
-                        <button class="g-btn">Nord</button>
+                        <button id="north-btn" class="g-btn">Nord</button>
                     </div>
                     <div class="ew-btn">
-                        <button class="g-btn">Ouest</button>
-                        <button class="g-btn">Est</button>
+                        <button id="west-btn" class="g-btn">Ouest</button>
+                        <button id="east-btn" class="g-btn">Est</button>
                     </div>
                     <div class="sn-btn">
-                        <button class="g-btn">Sud</button>
+                        <button id="south-btn" class="g-btn">Sud</button>
                     </div>
                 </div>
                 <div class="action-btn">
@@ -110,5 +96,9 @@
         </div>
     </div>
 </div>
+<script>
+    const contextPath = "${pageContext.request.contextPath}";
+    const playerSession = "${playerSessionLogin}";
+</script>
 <script src="${pageContext.request.contextPath}/assets/js/gameSocket.js"></script>
 

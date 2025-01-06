@@ -263,7 +263,9 @@ h3{
 .g-btn:hover{
     background-color: #91AC8F; /* Green */
 }
-
+.selectedCell{
+    border: 2px solid dodgerblue;
+}
 /* Responsive Design */
 @media screen and (max-width: 768px) {
     .nav-links {

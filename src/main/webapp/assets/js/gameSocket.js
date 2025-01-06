@@ -1,5 +1,7 @@
 let socket;
 let retries = 0;
+let selectedCell;
+let selectedSoldier;
 
 window.onload = () => {
     connectWebSocket();
@@ -16,8 +18,6 @@ function connectWebSocket() {
 
         socket.onmessage = (event) => {
             const data = JSON.parse(event.data);
-            console.log("Un message est reçue "+event.data.message);
-            console.log(data);
             if (data.type === "update") {
                 updateGameInfo(data.payload);
             } else if (data.type === "system") {
@@ -58,6 +58,19 @@ function sendMessage() {
     }
 }
 
+/**
+ * Updates the game information based on the provided payload.
+ *
+ * @param {Object} payload - The payload containing information to update the game.
+ * @param {Array} payload.players - An array of player objects.
+ * @param {string} payload.playerTurn - The player whose turn it is.
+ * @param {number} payload.playerScore - The score of the player.
+ * @param {number} payload.productionPoints - The production points of the player.
+ * @param {Array} payload.soldiers - An array of soldier information.
+ * @param {string} payload.playerSession - The session information of the player.
+ *
+ * @return {void}
+ */
 function updateGameInfo(payload) {
     if (payload.players) {
         const playerList = document.querySelector(".players-info ul");
@@ -78,15 +91,118 @@ function updateGameInfo(payload) {
         document.getElementById("playerProductionPoint").textContent = payload.productionPoints;
     }
     if (payload.soldiers !== undefined) {
-        //TODO: Mettre à jour la position des soldats
+        displaySoldiers(payload.soldiers)
+        console.log(payload.soldiers);
     }
 }
 
 function addMessageToChat(message) {
     const messagesDiv = document.getElementById("messages");
     const p = document.createElement("p");
-    console.log("Un message devrait être créer ?")
     p.textContent = message;
     messagesDiv.appendChild(p);
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
 }
+
+/**
+ * Display soldiers on the game board.
+ *
+ * @param {Array} soldiers - Array of soldier objects to be displayed.
+ *
+ * @return {void}
+ */
+function displaySoldiers(soldiers){
+    let i = 0;
+    selectedSoldier = null;
+    if (selectedCell !== undefined && selectedCell !== null) {
+        selectedCell.classList.remove("selectedCell");
+    }
+    selectedCell = null;
+
+    const soldierImages = document.getElementsByClassName("soldierImage");
+    console.log(soldierImages);
+    const soldierImageArray= Array.from(soldierImages);
+    soldierImageArray.forEach(soldier => {
+        soldier.remove()
+    })
+    soldiers.forEach(soldier => {
+        const tableCase = document.getElementById(soldier.coordinates.x+"-"+soldier.coordinates.y)
+        const image = document.createElement("img");
+        image.src = contextPath+"/assets/images/icons/Small/soldier.png";
+        image.classList.add("foreground_img");
+        image.classList.add("case");
+        image.classList.add("soldierImage");
+        image.id = soldier.id;
+        tableCase.appendChild(image);
+        tableCase.addEventListener('click',()=>selectSoldier(soldier));
+        i++;
+    })
+}
+
+/**
+ * Selects a soldier on the game board.
+ *
+ * @param {Object} soldier - The soldier object to select, with coordinates property.
+ * @return {void}
+ */
+function selectSoldier(soldier){
+    const tableCase = document.getElementById(soldier.coordinates.x+"-"+soldier.coordinates.y)
+
+    if (selectedCell) {
+        selectedCell.classList.remove("selectedCell")
+        selectedCell = null;
+    }
+    const imgElement = tableCase.querySelector(`img[id="${soldier.id}"]`);
+
+    if (imgElement) {
+        if (soldier.login === playerSession){
+            selectedSoldier = soldier;
+            tableCase.classList.add("selectedCell");
+            selectedCell = tableCase;
+            console.log("select cell: ");
+            console.log(selectedCell);
+            console.log("Soldat : ");
+            console.log(selectedSoldier);
+        }else {
+            addMessageToChat("Système: Ce soldat ne t'appartiens pas !");
+        }
+    }
+}
+
+function moveSoldier(direction){
+    if (selectedSoldier) {
+        const cell = document.getElementById(selectedSoldier.id);
+        const payload ={
+            type: "moveSoldier",
+            soldierId: selectedSoldier.id,
+            oldCoordinates: selectedSoldier.coordinates,
+            direction: direction,
+        };
+        socket.send(JSON.stringify(payload));
+
+        selectedCell.classList.remove("selectedCell");
+        selectedCell = null;
+        selectedSoldier = null;
+        cell.remove();
+        console.log("supprimé")
+        console.log(selectedCell);
+    }else {
+        addMessageToChat("Système: Veuillez sélectionner un soldat avant de déplacer !");
+    }
+}
+
+
+document.addEventListener("click", (e) => {
+    if (!e.target.classList.contains('case')) {
+        if (selectedCell) {
+            selectedCell.classList.remove('selectedCell');
+            selectedCell = null;
+            selectedSoldier = null;
+        }
+    }
+})
+
+document.getElementById("north-btn").addEventListener("click", () => moveSoldier("north"));
+document.getElementById("south-btn").addEventListener("click", () => moveSoldier("south"));
+document.getElementById("west-btn").addEventListener("click", () => moveSoldier("west"));
+document.getElementById("east-btn").addEventListener("click", () => moveSoldier("east"));

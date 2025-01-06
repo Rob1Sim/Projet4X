@@ -1,6 +1,5 @@
 package org.example.projet4dx.model.gameEngine.engine;
 
-import jakarta.persistence.EntityManager;
 import org.example.projet4dx.model.Game;
 import org.example.projet4dx.model.gameEngine.*;
 import org.example.projet4dx.model.gameEngine.engine.event.GameEvent;
@@ -178,6 +177,10 @@ public class GameInstance {
             case WEST:
                 newCoordinates.left();
                 break;
+        }
+        if (newCoordinates.getX() >= getMap().getWidth() || newCoordinates.getY() >= getMap().getHeight()) {
+            GameEventManager.getInstance().notifyGameEvent(new GameEvent(GameEventType.MOVEMENT,"Le soldat ne peut pas se déplacer vers "+direction+" !"));
+            return;
         }
 
         Soldier potentialSoldier = Soldier.getSoldierByCoordinates(newCoordinates);

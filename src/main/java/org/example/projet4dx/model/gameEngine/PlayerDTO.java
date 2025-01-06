@@ -73,6 +73,10 @@ public class PlayerDTO {
         return soldiers.stream().filter(s -> s.equals(soldier)).findFirst().orElse(null);
     }
 
+    public Soldier getSoldierById(String id) {
+        return soldiers.stream().filter(s -> s.getId().equals(id)).findFirst().orElse(null);
+    }
+
     public String getLogin() {
         return login;
     }
@@ -90,11 +94,17 @@ public class PlayerDTO {
         this.score += score;
     }
 
-    public void setProductionPoint(int productionPoint) {
-        this.productionPoint = productionPoint;
-    }
 
     public void addProductionPoint(int productionPoint) {
         this.productionPoint += productionPoint;
+    }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "login:'" + login + '\'' +
+                ",\n score:" + score +
+                ",\n productionPoint:" + productionPoint +
+                '}';
     }
 }

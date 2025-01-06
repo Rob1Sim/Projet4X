@@ -7,11 +7,13 @@ import org.example.projet4dx.model.gameEngine.engine.event.GameEventType;
 import org.example.projet4dx.model.gameEngine.utils.Coordinates;
 
 import java.util.Random;
+import java.util.UUID;
 
 /**
  * Represents a soldier entity in the game that implements combat capabilities.
  */
 public class Soldier implements ICombat {
+    private final String id;
     private Coordinates coordinates;
     private final PlayerDTO playerDTO;
     private int hp;
@@ -21,6 +23,8 @@ public class Soldier implements ICombat {
         coordinates = new Coordinates();
         this.playerDTO = playerDTO;
         hp = MAX_HP;
+        id= UUID.randomUUID().toString();
+
     }
 
     public Coordinates getCoordinates() {
@@ -92,5 +96,19 @@ public class Soldier implements ICombat {
 
     public void setHp(int hp) {
         this.hp = hp;
+    }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "id:"+id+
+                ",\n coordinates:" + coordinates +
+                ",\n playerDTO:" + playerDTO +
+                ",\n hp:" + hp +
+                '}';
+    }
+
+    public String getId() {
+        return id;
     }
 }
