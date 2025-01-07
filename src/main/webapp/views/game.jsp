@@ -42,9 +42,9 @@
                     </div>
                 </div>
                 <div class="action-btn">
-                    <button class="g-btn">Soin</button>
-                    <button class="g-btn">Déforester</button>
-                    <button class="g-btn">Recruter</button>
+                    <button id="heal-btn" class="g-btn">Soin</button>
+                    <button id="deforest-btn" class="g-btn">Déforester</button>
+                    <button id="recruit-btn" class="g-btn">Recruter</button>
                     <button id="end-turn-btn" class="g-btn">Fin de tour</button>
 
                 </div>

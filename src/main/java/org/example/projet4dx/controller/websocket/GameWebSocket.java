@@ -146,6 +146,18 @@ public class GameWebSocket {
                 }
                 GameInstance.getInstance().moveSoldier(soldier, directionEnum);
             }
+            if("healSoldier".equals(type)){
+                String soldierId = json.get("soldierId").getAsString();
+                Soldier soldier = playerSession.getPlayerDTO().getSoldierById(soldierId);
+                GameInstance.healSoldierAction(soldier);
+            }
+
+            if("deforestAction".equals(type)){
+                String soldierId = json.get("soldierId").getAsString();
+                Soldier soldier = playerSession.getPlayerDTO().getSoldierById(soldierId);
+
+                GameInstance.useForestAction(soldier);
+            }
 
             if("endTurn".equals(type)){
                 GameInstance.getInstance().nextTurn();

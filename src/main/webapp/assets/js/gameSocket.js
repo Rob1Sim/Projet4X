@@ -74,6 +74,8 @@ function sendMessage() {
  * @return {void}
  */
 function updateGameInfo(payload) {
+    if (selectedSoldier != null && selectedCell !== undefined)
+        updateHealthBar(selectedSoldier)
     if (payload.players) {
         const playerList = document.querySelector(".players-info ul");
         playerList.innerHTML = "";
@@ -95,7 +97,6 @@ function updateGameInfo(payload) {
     }
     if (payload.soldiers !== undefined) {
         displaySoldiers(payload.soldiers)
-        console.log(payload.soldiers);
     }
 }
 
@@ -156,25 +157,16 @@ function selectSoldier(soldier){
         selectedCell = null;
     }
     const imgElement = tableCase.querySelector(`img[id="${soldier.id}"]`);
-    const soldierInfo = document.getElementById("soldier-info")
 
     if (imgElement) {
         if (soldier.login === playerSession){
             selectedSoldier = soldier;
             tableCase.classList.add("selectedCell");
             selectedCell = tableCase;
-            const healthBar = document.getElementById('health-bar');
-            const healthPercentage = (soldier.hp / soldier.maxHP) * 100;
-            healthBar.style.width = healthPercentage + '%';
-
-            if (healthPercentage > 50) {
-                healthBar.style.backgroundColor = 'green';
-            } else if (healthPercentage > 20) {
-                healthBar.style.backgroundColor = 'orange';
-            } else {
-                healthBar.style.backgroundColor = 'red';
-            }
+            updateHealthBar(selectedSoldier)
+            const soldierInfo = document.getElementById("soldier-info")
             soldierInfo.classList.add("soldier-display");
+
         }else {
             addMessageToChat("Système: Ce soldat ne t'appartiens pas !");
         }
@@ -182,24 +174,89 @@ function selectSoldier(soldier){
 }
 
 function moveSoldier(direction){
+    if(doSelectedSoldierCanDoAnAction()){
+        const cell = document.getElementById(selectedSoldier.id);
+        const payload ={
+            type: "moveSoldier",
+            soldierId: selectedSoldier.id,
+            oldCoordinates: selectedSoldier.coordinates,
+            direction: direction,
+        };
+        socket.send(JSON.stringify(payload));
+        cell.remove();
+        endOfAnAction()
+    }
+}
+
+function endTurn(){
+    socket.send(JSON.stringify({ type: "endTurn" }));
+    soldierMovedList= [];
+}
+
+function healSoldier(){
+    if (doSelectedSoldierCanDoAnAction()){
+        const payload = {
+            type: "healSoldier",
+            soldierId: selectedSoldier.id
+        };
+        socket.send(JSON.stringify(payload));
+        endOfAnAction()
+    }
+}
+
+function deforestAction(){
+    if (doSelectedSoldierCanDoAnAction()) {
+        const payload = {
+            type: "deforestAction",
+            soldierId: selectedSoldier.id
+        };
+        socket.send(JSON.stringify(payload));
+        endOfAnAction();
+    }
+}
+
+function recruitAction(){
+    if (doSelectedSoldierCanDoAnAction()) {
+        const payload = {
+            type: "recruitAction",
+        };
+        socket.send(JSON.stringify(payload));
+        endOfAnAction();
+    }
+}
+
+
+/**
+ * Updates the health bar for a given soldier based on their current health points (hp) and maximum health points (maxHP).
+ *
+ * @param {Object} soldier - The soldier object containing health information.
+ * @param {number} soldier.hp - The current health points of the soldier.
+ * @param {number} soldier.maxHP - The maximum health points of the soldier.
+ *
+ * @return {void} - This function does not return anything.
+ */
+function updateHealthBar(soldier){
+    const healthBar = document.getElementById('health-bar');
+    const healthPercentage = (soldier.hp / soldier.maxHP) * 100;
+    healthBar.style.width = healthPercentage + '%';
+
+    if (healthPercentage > 50) {
+        healthBar.style.backgroundColor = 'green';
+    } else if (healthPercentage > 20) {
+        healthBar.style.backgroundColor = 'orange';
+    } else {
+        healthBar.style.backgroundColor = 'red';
+    }
+}
+/**
+ * Check if the selected soldier can perform an action based on the current player session and turn
+ * @return {boolean} Returns true if the selected soldier can perform an action, otherwise false
+ */
+function doSelectedSoldierCanDoAnAction(){
     if (playerSession === playerTurn ) {
         if(selectedSoldier){
             if(soldierMovedList.findIndex(move => move.id === selectedSoldier.id) === -1){
-                const cell = document.getElementById(selectedSoldier.id);
-                const payload ={
-                    type: "moveSoldier",
-                    soldierId: selectedSoldier.id,
-                    oldCoordinates: selectedSoldier.coordinates,
-                    direction: direction,
-                };
-                socket.send(JSON.stringify(payload));
-
-                soldierMovedList.push(selectedSoldier);
-
-                selectedCell.classList.remove("selectedCell");
-                selectedCell = null;
-                selectedSoldier = null;
-                cell.remove();
+                return true;
             }else {
                 addMessageToChat("Système: Ce soldat à déjà bougé !");
             }
@@ -209,11 +266,19 @@ function moveSoldier(direction){
     }else {
         addMessageToChat("Système: Ce n'est pas votre tour !");
     }
+    return false;
 }
 
-function endTurn(){
-    socket.send(JSON.stringify({ type: "endTurn" }));
-    soldierMovedList= [];
+/**
+ * Marks the end of an action by updating variables and classes
+ *
+ * @return {void}
+ */
+function endOfAnAction(){
+    soldierMovedList.push(selectedSoldier);
+    selectedCell.classList.remove("selectedCell");
+    selectedCell = null;
+    selectedSoldier = null;
 }
 
 document.addEventListener("click", (e) => {
@@ -235,3 +300,6 @@ document.getElementById("south-btn").addEventListener("click", () => moveSoldier
 document.getElementById("west-btn").addEventListener("click", () => moveSoldier("west"));
 document.getElementById("east-btn").addEventListener("click", () => moveSoldier("east"));
 document.getElementById("end-turn-btn").addEventListener("click", () => endTurn());
+document.getElementById("heal-btn").addEventListener("click", () => healSoldier());
+document.getElementById("deforest-btn").addEventListener("click", () => deforestAction());
+document.getElementById("recruit-btn").addEventListener("click", () => recruitAction());

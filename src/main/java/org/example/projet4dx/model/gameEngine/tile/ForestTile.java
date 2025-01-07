@@ -19,13 +19,16 @@ public class ForestTile implements ITileType{
      */
     @Override
     public void use() {
-        if (player != null && !hasBeenExploited) {
-            int productionPoint = 10;
-            player.addProductionPoint(productionPoint);
-            hasBeenExploited = true;
-            GameEventManager.getInstance().notifyGameEvent(new GameEvent(GameEventType.ACTION,player.getLogin()+" récupère "+productionPoint+", mais la forêt n'est plus utilisable !"));
+        if (player != null ) {
+            if (hasBeenExploited){
+                GameEventManager.getInstance().notifyGameEvent(new GameEvent(GameEventType.SYSTEM,"Cette forêt a déjà été défriché, tu ne peux plus l'utiliser !"));
+            }else {
+                int productionPoint = 10;
+                player.addProductionPoint(productionPoint);
+                hasBeenExploited = true;
+                GameEventManager.getInstance().notifyGameEvent(new GameEvent(GameEventType.ACTION,player.getLogin()+" récupère "+productionPoint+", mais la forêt n'est plus utilisable !"));
+            }
         }
-        GameEventManager.getInstance().notifyGameEvent(new GameEvent(GameEventType.SYSTEM,"Cette forêt a déjà été défriché, tu ne peux plus l'utiliser !"));
     }
 
     /**
@@ -38,11 +41,12 @@ public class ForestTile implements ITileType{
     @Override
     public boolean canCollide(Tile tile, Soldier soldier) {
         if (Soldier.getSoldierByCoordinates(tile.getCoordinates()) == null) {
-            player = soldier.getPlayerDTO();
-            int scoreWin = 25;
-            player.addScore(scoreWin);
-            GameEventManager.getInstance().notifyGameEvent(new GameEvent(GameEventType.SYSTEM,"Une forêt est réccupérée par "+player.getLogin()+" ! Il gagne "+scoreWin+" points."));
-
+            if(player == null){
+                int scoreWin = 25;
+                player = soldier.getPlayerDTO();
+                player.addScore(scoreWin);
+                GameEventManager.getInstance().notifyGameEvent(new GameEvent(GameEventType.SYSTEM,"Une forêt est occupée par "+player.getLogin()+" ! Il gagne "+scoreWin+" points."));
+            }
             return true;
         }
         return false;
