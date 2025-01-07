@@ -147,6 +147,23 @@ public class GameWebSocket {
         basicBroadcast(jsonString);
     }
 
+    /**
+     * Broadcasts a soldier information update message to all connected WebSocket sessions.
+     *
+     * @param canWalk a boolean indicating whether the soldier can walk or not
+     */
+    public static void broadcastSoldierInfoUpdate(boolean canWalk, String soldierId){
+        JsonObject json = new JsonObject();
+        JsonObject payload = new JsonObject();
+
+        json.addProperty("type", "soldierUpdate");
+        payload.addProperty("canWalk", canWalk);
+        payload.addProperty("soldierId", soldierId);
+        json.add("payload", payload);
+        String jsonString = json.toString();
+        basicBroadcast(jsonString);
+    }
+
     @OnMessage
     public void onMessage(String message, Session session) {
         try {
@@ -176,7 +193,7 @@ public class GameWebSocket {
                 if (directionEnum == null) {
                     throw new IllegalArgumentException("Direction not recognized: " + direction);
                 }
-                GameInstance.getInstance().moveSoldier(soldier, directionEnum);
+                broadcastSoldierInfoUpdate(GameInstance.getInstance().moveSoldier(soldier, directionEnum),soldierId);
             }
             if("healSoldier".equals(type)){
                 String soldierId = json.get("soldierId").getAsString();

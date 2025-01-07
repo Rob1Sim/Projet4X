@@ -179,7 +179,7 @@ public class GameInstance {
      * @param soldier the Soldier object to be moved
      * @param direction the direction in which to move the Soldier
      */
-    public void moveSoldier(Soldier soldier, Direction direction) {
+    public boolean moveSoldier(Soldier soldier, Direction direction) {
         Coordinates newCoordinates = new Coordinates(soldier.getCoordinates().getX(), soldier.getCoordinates().getY());
         switch (direction) {
             case EAST:
@@ -197,7 +197,7 @@ public class GameInstance {
         }
         if (newCoordinates.getX() >= getMap().getWidth() || newCoordinates.getY() >= getMap().getHeight()) {
             GameEventManager.getInstance().notifyGameEvent(new GameEvent(GameEventType.MOVEMENT,"Le soldat ne peut pas se déplacer vers "+direction+" !"));
-            return;
+            return false;
         }
 
         Soldier potentialSoldier = Soldier.getSoldierByCoordinates(newCoordinates);
@@ -207,8 +207,11 @@ public class GameInstance {
         if (GameInstance.getInstance().getMap().getTileAtCoord(newCoordinates).collide(soldier)){
             soldier.setCoordinates(newCoordinates);
             GameEventManager.getInstance().notifyGameEvent(new GameEvent(GameEventType.MOVEMENT,"Le soldat se déplace vers "+direction+" !"));
-        }else
+            return true;
+        }else{
             GameEventManager.getInstance().notifyGameEvent(new GameEvent(GameEventType.MOVEMENT,"Le soldat ne peut pas se déplacer vers "+direction+" !"));
+            return false;
+        }
     }
 
 

@@ -24,6 +24,8 @@ function connectWebSocket() {
                 updateGameInfo(data.payload);
             } else if (data.type === "system") {
                 addMessageToChat(data.message);
+            } else if (data.type === "soldierUpdate") {
+                endOfAnActionResponse(data.payload)
             }
         };
 
@@ -203,7 +205,6 @@ function selectSoldier(soldier){
 
 function moveSoldier(direction){
     if(doSelectedSoldierCanDoAnAction()){
-        const cell = document.getElementById(selectedSoldier.id);
         const payload ={
             type: "moveSoldier",
             soldierId: selectedSoldier.id,
@@ -211,8 +212,6 @@ function moveSoldier(direction){
             direction: direction,
         };
         socket.send(JSON.stringify(payload));
-        cell.remove();
-        endOfAnAction()
     }
 }
 
@@ -283,7 +282,7 @@ function updateHealthBar(soldier){
 function doSelectedSoldierCanDoAnAction(){
     if (playerSession === playerTurn ) {
         if(selectedSoldier){
-            if(soldierMovedList.findIndex(move => move.id === selectedSoldier.id) === -1){
+            if(soldierMovedList.findIndex(move => move === selectedSoldier.id) === -1){
                 return true;
             }else {
                 addMessageToChat("Système: Ce soldat à déjà agis !");
@@ -303,10 +302,19 @@ function doSelectedSoldierCanDoAnAction(){
  * @return {void}
  */
 function endOfAnAction(){
-    soldierMovedList.push(selectedSoldier);
+    soldierMovedList.push(selectedSoldier.id);
     selectedCell.classList.remove("selectedCell");
     selectedCell = null;
     selectedSoldier = null;
+}
+
+function endOfAnActionResponse(payload){
+    if (payload.canWalk !== undefined && payload.soldierId !== undefined && payload.canWalk){
+        const cell = document.getElementById(payload.soldierId);
+        soldierMovedList.push(payload.soldierId);
+        selectedSoldier = null;
+        cell.remove();
+    }
 }
 
 /**
