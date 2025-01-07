@@ -7,7 +7,6 @@
 <div class="game-page">
     <div class="game-panel">
         <div class="game-grid">
-            <!-- TODO:Implémenter la grille -->
             <table id="table">
             <% Map map = (Map)request.getAttribute("gameMap");
                 for (int y = 0; y < map.getHeight(); y++){
@@ -49,7 +48,14 @@
                     <button id="end-turn-btn" class="g-btn">Fin de tour</button>
 
                 </div>
+                <div id="soldier-info" class="soldier-info">
+                    <h4>Soldat:</h4>
+                    <div id="health-bar-container" style="width: 200px; height: 20px; border: 1px solid #000;">
+                        <div id="health-bar" style="width: 100%; height: 100%; background-color: green;"></div>
+                    </div>
+                </div>
             </div>
+
         </div>
     </div>
     <div class="game-info">

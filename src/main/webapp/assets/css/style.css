@@ -266,6 +266,16 @@ h3{
 .selectedCell{
     border: 2px solid dodgerblue;
 }
+
+.soldier-info{
+    display: none;
+}
+
+.soldier-display{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 /* Responsive Design */
 @media screen and (max-width: 768px) {
     .nav-links {

@@ -156,16 +156,25 @@ function selectSoldier(soldier){
         selectedCell = null;
     }
     const imgElement = tableCase.querySelector(`img[id="${soldier.id}"]`);
+    const soldierInfo = document.getElementById("soldier-info")
 
     if (imgElement) {
         if (soldier.login === playerSession){
             selectedSoldier = soldier;
             tableCase.classList.add("selectedCell");
             selectedCell = tableCase;
-            console.log("select cell: ");
-            console.log(selectedCell);
-            console.log("Soldat : ");
-            console.log(selectedSoldier);
+            const healthBar = document.getElementById('health-bar');
+            const healthPercentage = (soldier.hp / soldier.maxHP) * 100;
+            healthBar.style.width = healthPercentage + '%';
+
+            if (healthPercentage > 50) {
+                healthBar.style.backgroundColor = 'green';
+            } else if (healthPercentage > 20) {
+                healthBar.style.backgroundColor = 'orange';
+            } else {
+                healthBar.style.backgroundColor = 'red';
+            }
+            soldierInfo.classList.add("soldier-display");
         }else {
             addMessageToChat("Système: Ce soldat ne t'appartiens pas !");
         }
@@ -202,21 +211,24 @@ function moveSoldier(direction){
     }
 }
 
+function endTurn(){
+    socket.send(JSON.stringify({ type: "endTurn" }));
+    soldierMovedList= [];
+}
 
 document.addEventListener("click", (e) => {
     if (!e.target.classList.contains('case')) {
         if (selectedCell) {
             selectedCell.classList.remove('selectedCell');
+            const soldierInfo = document.getElementById("soldier-info")
+            soldierInfo.classList.remove("soldier-display");
+
             selectedCell = null;
             selectedSoldier = null;
         }
     }
 })
 
-function endTurn(){
-    socket.send(JSON.stringify({ type: "endTurn" }));
-    soldierMovedList= [];
-}
 
 document.getElementById("north-btn").addEventListener("click", () => moveSoldier("north"));
 document.getElementById("south-btn").addEventListener("click", () => moveSoldier("south"));

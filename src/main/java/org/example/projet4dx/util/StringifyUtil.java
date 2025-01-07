@@ -26,6 +26,8 @@ public class StringifyUtil {
             soldierObject.add("coordinates",coordinatesObject);
             soldierObject.addProperty("login",soldier.getPlayerDTO().getLogin());
             soldierObject.addProperty("id", soldier.getId());
+            soldierObject.addProperty("hp",soldier.getHP());
+            soldierObject.addProperty("maxHP",Soldier.MAX_HP);
 
             soldierArray.add(soldierObject);
         }
