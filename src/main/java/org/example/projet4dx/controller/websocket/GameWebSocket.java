@@ -146,6 +146,10 @@ public class GameWebSocket {
                 }
                 GameInstance.getInstance().moveSoldier(soldier, directionEnum);
             }
+
+            if("endTurn".equals(type)){
+                GameInstance.getInstance().nextTurn();
+            }
             broadcastGameUpdate(session);
             broadcastPlayersInfoUpdate();
         } catch (Exception e) {

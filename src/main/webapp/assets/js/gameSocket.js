@@ -2,6 +2,8 @@ let socket;
 let retries = 0;
 let selectedCell;
 let selectedSoldier;
+let soldierMovedList= [];
+let playerTurn;
 
 window.onload = () => {
     connectWebSocket();
@@ -83,6 +85,7 @@ function updateGameInfo(payload) {
     }
     if (payload.playerTurn !== undefined) {
         document.getElementById("playerTurn").textContent = payload.playerTurn;
+        playerTurn = payload.playerTurn;
     }
     if (payload.playerScore !== undefined) {
         document.getElementById("playerScore").textContent = payload.playerScore;
@@ -170,24 +173,32 @@ function selectSoldier(soldier){
 }
 
 function moveSoldier(direction){
-    if (selectedSoldier) {
-        const cell = document.getElementById(selectedSoldier.id);
-        const payload ={
-            type: "moveSoldier",
-            soldierId: selectedSoldier.id,
-            oldCoordinates: selectedSoldier.coordinates,
-            direction: direction,
-        };
-        socket.send(JSON.stringify(payload));
+    if (playerSession === playerTurn ) {
+        if(selectedSoldier){
+            if(soldierMovedList.findIndex(move => move.id === selectedSoldier.id) === -1){
+                const cell = document.getElementById(selectedSoldier.id);
+                const payload ={
+                    type: "moveSoldier",
+                    soldierId: selectedSoldier.id,
+                    oldCoordinates: selectedSoldier.coordinates,
+                    direction: direction,
+                };
+                socket.send(JSON.stringify(payload));
 
-        selectedCell.classList.remove("selectedCell");
-        selectedCell = null;
-        selectedSoldier = null;
-        cell.remove();
-        console.log("supprimé")
-        console.log(selectedCell);
+                soldierMovedList.push(selectedSoldier);
+
+                selectedCell.classList.remove("selectedCell");
+                selectedCell = null;
+                selectedSoldier = null;
+                cell.remove();
+            }else {
+                addMessageToChat("Système: Ce soldat à déjà bougé !");
+            }
+        }else {
+            addMessageToChat("Système: Veuillez sélectionner un soldat avant de déplacer !");
+        }
     }else {
-        addMessageToChat("Système: Veuillez sélectionner un soldat avant de déplacer !");
+        addMessageToChat("Système: Ce n'est pas votre tour !");
     }
 }
 
@@ -202,7 +213,13 @@ document.addEventListener("click", (e) => {
     }
 })
 
+function endTurn(){
+    socket.send(JSON.stringify({ type: "endTurn" }));
+    soldierMovedList= [];
+}
+
 document.getElementById("north-btn").addEventListener("click", () => moveSoldier("north"));
 document.getElementById("south-btn").addEventListener("click", () => moveSoldier("south"));
 document.getElementById("west-btn").addEventListener("click", () => moveSoldier("west"));
 document.getElementById("east-btn").addEventListener("click", () => moveSoldier("east"));
+document.getElementById("end-turn-btn").addEventListener("click", () => endTurn());

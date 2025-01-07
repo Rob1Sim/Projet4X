@@ -2,12 +2,7 @@
 <%@ page import="org.example.projet4dx.model.gameEngine.utils.Coordinates" %>
 <%@ page import="java.util.List" %>
 <%@ page import="org.example.projet4dx.model.gameEngine.PlayerDTO" %>
-  Created by IntelliJ IDEA.
-  User: robis
-  Date: 24/12/2024
-  Time: 11:02
-  To change this template use File | Settings | File Templates.
---%>
+
 <%@ page contentType="text/html;charset=UTF-8" %>
 <div class="game-page">
     <div class="game-panel">
@@ -51,7 +46,7 @@
                     <button class="g-btn">Soin</button>
                     <button class="g-btn">Déforester</button>
                     <button class="g-btn">Recruter</button>
-                    <button class="g-btn">Fin de tour</button>
+                    <button id="end-turn-btn" class="g-btn">Fin de tour</button>
 
                 </div>
             </div>
