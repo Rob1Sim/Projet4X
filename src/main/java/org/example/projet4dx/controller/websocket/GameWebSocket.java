@@ -83,10 +83,17 @@ public class GameWebSocket {
         json.addProperty("type", "update");
         JsonObject payload = new JsonObject();
 
-        PlayerSession playerSession = getPlayerBySession(session);
+        JsonArray playersInfo = new JsonArray();
+        for (PlayerDTO ps : GameInstance.getInstance().getPlayers()) {
+            JsonObject playerData = new JsonObject();
+            playerData.addProperty("login", ps.getLogin());
+            playerData.addProperty("score", ps.getScore());
+            playerData.addProperty("productionPoints",ps.getProductionPoint());
+            playersInfo.add(playerData);
+        }
+
         payload.addProperty("playerTurn", GameInstance.getInstance().getCurrentPlayer().getLogin());
-        payload.addProperty("playerScore", playerSession.getPlayerDTO().getScore());
-        payload.addProperty("productionPoints", playerSession.getPlayerDTO().getProductionPoint());
+        payload.add("playersInfo", playersInfo);
         payload.add("soldiers", StringifyUtil.jsonifySoldierList(GameInstance.getInstance().getAllSoldiers()));
         json.add("payload", payload);
 

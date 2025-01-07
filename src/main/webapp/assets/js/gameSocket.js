@@ -88,12 +88,16 @@ function updateGameInfo(payload) {
     if (payload.playerTurn !== undefined) {
         document.getElementById("playerTurn").textContent = payload.playerTurn;
         playerTurn = payload.playerTurn;
+        changeButtonState(playerSession !== playerTurn)
     }
-    if (payload.playerScore !== undefined) {
-        document.getElementById("playerScore").textContent = payload.playerScore;
-    }
-    if (payload.productionPoints !== undefined) {
-        document.getElementById("playerProductionPoint").textContent = payload.productionPoints;
+    if (payload.playersInfo !== undefined) {
+        const currentPlayer = playerSession;
+        payload.playersInfo.forEach(player => {
+            if (player.login === currentPlayer) {
+                document.getElementById("playerScore").textContent = player.score;
+                document.getElementById("playerProductionPoint").textContent = player.productionPoints;
+            }
+        });
     }
     if (payload.soldiers !== undefined) {
         displaySoldiers(payload.soldiers)
@@ -258,10 +262,10 @@ function doSelectedSoldierCanDoAnAction(){
             if(soldierMovedList.findIndex(move => move.id === selectedSoldier.id) === -1){
                 return true;
             }else {
-                addMessageToChat("Système: Ce soldat à déjà bougé !");
+                addMessageToChat("Système: Ce soldat à déjà agis !");
             }
         }else {
-            addMessageToChat("Système: Veuillez sélectionner un soldat avant de déplacer !");
+            addMessageToChat("Système: Veuillez sélectionner un soldat !");
         }
     }else {
         addMessageToChat("Système: Ce n'est pas votre tour !");
@@ -281,6 +285,18 @@ function endOfAnAction(){
     selectedSoldier = null;
 }
 
+/**
+ * Function to change the state of all buttons with class "g-btn".
+ * @param {boolean} buttonState - The new state to set for the buttons (true for disabled, false for enabled).
+ * @return {void}
+ */
+function changeButtonState(buttonState){
+    const buttons = document.querySelectorAll(".g-btn");
+    buttons.forEach(button => {
+        button.disabled = buttonState;
+    });
+}
+
 document.addEventListener("click", (e) => {
     if (!e.target.classList.contains('case')) {
         if (selectedCell) {
@@ -293,6 +309,8 @@ document.addEventListener("click", (e) => {
         }
     }
 })
+
+
 
 
 document.getElementById("north-btn").addEventListener("click", () => moveSoldier("north"));

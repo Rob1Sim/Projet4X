@@ -44,7 +44,7 @@ public class CityTile implements ITileType, ICombat {
     @Override
     public void use() {
         int productionPoint = 5;
-        if (player != null) {
+        if (player != null && isTaken) {
             GameEventManager.getInstance().notifyGameEvent(new GameEvent(GameEventType.ACTION,player.getLogin()+" récupère "+productionPoint+" points de production !"));
             player.addProductionPoint(productionPoint);
         }
@@ -105,9 +105,9 @@ public class CityTile implements ITileType, ICombat {
     @Override
     public void takeDamage(int damage, Soldier soldier) {
         defendPoint -= damage;
-        player = soldier.getPlayerDTO();
-
+        PlayerDTO attackerPlayer = soldier.getPlayerDTO();
         if (defendPoint <= 0) {
+            player = attackerPlayer;
             isTaken = true;
 
             int scoreWin = 100;
@@ -117,7 +117,7 @@ public class CityTile implements ITileType, ICombat {
 
 
         }else
-            GameEventManager.getInstance().notifyGameEvent(new GameEvent(GameEventType.ACTION,player.getLogin()+" attaque  "+this.getName()+" ! Mais il lui reste encore "+defendPoint+" points de défense!"));
+            GameEventManager.getInstance().notifyGameEvent(new GameEvent(GameEventType.ACTION,attackerPlayer.getLogin()+" attaque  "+this.getName()+" ! Mais il lui reste encore "+defendPoint+" points de défense!"));
     }
 
     @Override

@@ -65,11 +65,11 @@ public class Soldier implements ICombat {
         hp = hp - damage;
         if (hp <= 0) {
             int scoreWin = 50;
-            GameEventManager.getInstance().notifyGameEvent(new GameEvent(GameEventType.ACTION,"Le soldat de "+this.getPlayerDTO().getLogin()+" est mort !"+soldier.getPlayerDTO().getLogin()+" gagne "+scoreWin+" points"));
+            GameEventManager.getInstance().notifyGameEvent(new GameEvent(GameEventType.ACTION,"Le soldat de "+this.getPlayerDTO().getLogin()+" est mort ! "+soldier.getPlayerDTO().getLogin()+" gagne "+scoreWin+" points"));
             GameInstance.getInstance().getPlayerByPlayer(this.getPlayerDTO()).removeSoldier(this);
             soldier.getPlayerDTO().addScore(scoreWin);
         }else
-            GameEventManager.getInstance().notifyGameEvent(new GameEvent(GameEventType.ACTION,"Il ne rest que "+hp+"au soldat de "+this.getPlayerDTO().getLogin()+" !"));
+            GameEventManager.getInstance().notifyGameEvent(new GameEvent(GameEventType.ACTION,"Il ne reste que "+hp+" au soldat de "+this.getPlayerDTO().getLogin()+" !"));
     }
 
     @Override

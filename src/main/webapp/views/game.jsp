@@ -93,7 +93,7 @@
         </div>
         <div class="textbox-send">
             <input type="text" id="messageInput" placeholder="Enter your message" />
-            <button class="g-btn" onclick="sendMessage()">Send</button>
+            <button class="send-btn" onclick="sendMessage()">Send</button>
         </div>
     </div>
 </div>

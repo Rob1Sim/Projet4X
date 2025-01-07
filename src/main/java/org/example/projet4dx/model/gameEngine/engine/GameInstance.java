@@ -208,6 +208,7 @@ public class GameInstance {
             GameEventManager.getInstance().notifyGameEvent(new GameEvent(GameEventType.MOVEMENT,"Le soldat ne peut pas se déplacer vers "+direction+" !"));
     }
 
+
     public List<PlayerDTO> getPlayers() {
         return players;
     }
