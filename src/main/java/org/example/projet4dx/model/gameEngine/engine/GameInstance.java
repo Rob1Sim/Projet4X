@@ -1,6 +1,8 @@
 package org.example.projet4dx.model.gameEngine.engine;
 
 import org.example.projet4dx.model.Game;
+import org.example.projet4dx.model.Player;
+import org.example.projet4dx.model.PlayerGame;
 import org.example.projet4dx.model.gameEngine.*;
 import org.example.projet4dx.model.gameEngine.engine.event.GameEvent;
 import org.example.projet4dx.model.gameEngine.engine.event.GameEventManager;
@@ -8,10 +10,11 @@ import org.example.projet4dx.model.gameEngine.engine.event.GameEventType;
 import org.example.projet4dx.model.gameEngine.tile.CityTile;
 import org.example.projet4dx.model.gameEngine.tile.ForestTile;
 import org.example.projet4dx.model.gameEngine.tile.Map;
-import org.example.projet4dx.model.gameEngine.tile.Tile;
 import org.example.projet4dx.model.gameEngine.utils.Coordinates;
 import org.example.projet4dx.model.gameEngine.utils.Direction;
 import org.example.projet4dx.service.GameService;
+import org.example.projet4dx.service.PlayerGameService;
+import org.example.projet4dx.service.PlayerService;
 import org.example.projet4dx.util.PersistenceManager;
 
 import java.time.LocalDate;
@@ -208,6 +211,51 @@ public class GameInstance {
             GameEventManager.getInstance().notifyGameEvent(new GameEvent(GameEventType.MOVEMENT,"Le soldat ne peut pas se déplacer vers "+direction+" !"));
     }
 
+
+    /**
+     * Checks if any player has won the game based on their score or available soldiers.
+     *
+     * @return The PlayerDTO object of the winning player if someone has won the game, or null if no one has won yet.
+     */
+    public PlayerDTO hasSomeoneWon(){
+        for (PlayerDTO player : players) {
+            if (player.getScore() >= 500 ) {
+                GameEventManager.getInstance().notifyGameEvent(new GameEvent(GameEventType.SYSTEM, "Le joueur " + player.getLogin() + " a gagné la partie !"));
+                persistGameScore();
+                GameInstance.resetInstance();
+                return player;
+            }
+            if(player.getSoldiers().isEmpty()){
+                persistGameScore();
+                players.remove(player);
+                if (players.size() <= 1){
+                    if (players.isEmpty()){
+                        GameEventManager.getInstance().notifyGameEvent(new GameEvent(GameEventType.SYSTEM, "Personne n'a gagné !"));
+                        return null;
+                    }
+                    GameEventManager.getInstance().notifyGameEvent(new GameEvent(GameEventType.SYSTEM, "Le joueur " + players.get(0).getLogin() + " a gagné la partie !"));
+                    GameInstance.resetInstance();
+                    return players.get(0);
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Persists the game scores for each player by updating their scores in the database.
+     * Iterates through all players in the game instance and retrieves their corresponding Player and PlayerGame entities.
+     * Updates the player's score in the PlayerGame entity with the new score value from the PlayerDTO object.
+     */
+    private void persistGameScore(){
+        for (PlayerDTO player : players) {
+            PlayerService playerService = new PlayerService(PersistenceManager.getEntityManager());
+            PlayerGameService playerGameService = new PlayerGameService(PersistenceManager.getEntityManager());
+            Player player1 = playerService.getByLogin(player.getLogin());
+            PlayerGame pg = playerGameService.getPlayerGameByPlayerIdAndGameId(player1.getId(),game.getId());
+            playerGameService.updatePlayerScore(pg.getId(), player.getScore());
+        }
+    }
 
     public List<PlayerDTO> getPlayers() {
         return players;

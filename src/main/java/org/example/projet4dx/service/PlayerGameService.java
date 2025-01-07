@@ -31,6 +31,11 @@ public class PlayerGameService {
         return playerGameDao.getByPlayerId(id);
     }
 
+    public PlayerGame getPlayerGameByPlayerIdAndGameId(long id, long gameId) {
+       PlayerGameId playerGameId = new PlayerGameId(id, gameId);
+       return playerGameDao.getById(playerGameId);
+    }
+
     public List<PlayerGame> getPlayerGamesByGameId(long id) {
         return playerGameDao.getByGameId(id);
     }

@@ -3,6 +3,7 @@ package org.example.projet4dx.controller.websocket;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.websocket.*;
 import jakarta.websocket.server.ServerEndpoint;
@@ -11,6 +12,7 @@ import org.example.projet4dx.model.gameEngine.Soldier;
 import org.example.projet4dx.model.gameEngine.engine.GameInstance;
 import org.example.projet4dx.model.gameEngine.engine.event.GameEventType;
 import org.example.projet4dx.model.gameEngine.utils.Direction;
+import org.example.projet4dx.util.AuthenticationUtil;
 import org.example.projet4dx.util.StringifyUtil;
 
 import java.io.IOException;
@@ -108,6 +110,22 @@ public class GameWebSocket {
         basicBroadcast(jsonString);
     }
 
+    private static void hasSomeoneWon(){
+        PlayerDTO playerDTO = GameInstance.getInstance().hasSomeoneWon();
+        if ( playerDTO != null) {
+            JsonObject json = new JsonObject();
+            json.addProperty("type", "update");
+            JsonObject payload = new JsonObject();
+            payload.addProperty("gameState", "victory");
+            payload.addProperty("player",playerDTO.getLogin());
+            payload.addProperty("score",playerDTO.getScore());
+            json.add("payload", payload);
+            String jsonString = json.toString();
+
+            basicBroadcast(jsonString);
+        }
+    }
+
     /**
      * Broadcasts an update message containing players' information to all connected WebSocket sessions.
      * The method iterates through the playerSessions list and constructs a JSON payload that includes the login name of each player.
@@ -183,6 +201,9 @@ public class GameWebSocket {
 
             broadcastGameUpdate(session);
             broadcastPlayersInfoUpdate();
+
+            hasSomeoneWon();
+
         } catch (Exception e) {
             e.printStackTrace();
         }

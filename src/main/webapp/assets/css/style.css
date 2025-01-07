@@ -269,12 +269,6 @@ h3{
 
 
 
-.soldier-display{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
 button:disabled{
     background-color: #cccccc;
     color: #666666;
@@ -289,10 +283,15 @@ button:disabled{
     align-items: center;
 }
 
-.soldier-info, .waiting-screen-on{
+.soldier-info, .display-none{
     display: none;
 }
 
+.soldier-display{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 /* Responsive Design */
 @media screen and (max-width: 768px) {
     .nav-links {

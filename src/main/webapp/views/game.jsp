@@ -97,8 +97,11 @@
         </div>
     </div>
 </div>
-<div class="waiting-screen waiting-screen-on" id="waiting-screen">
+<div class="waiting-screen display-none" id="waiting-screen">
     <h1>En attente d'autres joueurs ...</h1>
+</div>
+<div class="waiting-screen display-none" id="victory-screen">
+    <h1></h1>
 </div>
 <script>
     const contextPath = "${pageContext.request.contextPath}";

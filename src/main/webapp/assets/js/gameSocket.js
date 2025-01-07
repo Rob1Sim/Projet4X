@@ -102,15 +102,24 @@ function updateGameInfo(payload) {
     if(payload.gameState !== undefined) {
         const gamePage = document.getElementById("game-page");
         const waitingScreen = document.getElementById("waiting-screen");
+        const victoryScreen = document.getElementById("victory-screen");
 
         switch (payload.gameState){
             case "waiting":
-                gamePage.classList.add("waiting-screen-on");
-                waitingScreen.classList.remove("waiting-screen-on");
+                gamePage.classList.add("display-none");
+                waitingScreen.classList.remove("display-none");
+                break;
+            case "victory":
+                gamePage.classList.add("display-none");
+                victoryScreen.classList.remove("display-none");
+                victoryScreen.querySelector("h1").textContent = payload.player+" à gagné avec un score de "+payload.score+" points !";
+                setTimeout(function() {
+                    window.location = contextPath+"/profile";
+                }, 3000);
                 break;
             default:
-                gamePage.classList.remove("waiting-screen-on");
-                waitingScreen.classList.add("waiting-screen-on");
+                gamePage.classList.remove("display-none");
+                waitingScreen.classList.add("display-none");
                 break;
            }
     }
