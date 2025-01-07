@@ -105,10 +105,10 @@ public class CityTile implements ITileType, ICombat {
     @Override
     public void takeDamage(int damage, Soldier soldier) {
         defendPoint -= damage;
+        player = soldier.getPlayerDTO();
 
         if (defendPoint <= 0) {
             isTaken = true;
-            player = soldier.getPlayerDTO();
 
             int scoreWin = 100;
             player.addScore(scoreWin);
@@ -128,5 +128,9 @@ public class CityTile implements ITileType, ICombat {
     @Override
     public String getName() {
         return "une ville";
+    }
+
+    public PlayerDTO getPlayer() {
+        return player;
     }
 }

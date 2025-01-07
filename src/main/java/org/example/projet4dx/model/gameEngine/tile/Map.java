@@ -1,5 +1,7 @@
 package org.example.projet4dx.model.gameEngine.tile;
 
+import org.example.projet4dx.model.Player;
+import org.example.projet4dx.model.gameEngine.PlayerDTO;
 import org.example.projet4dx.model.gameEngine.Soldier;
 import org.example.projet4dx.model.gameEngine.utils.Coordinates;
 
@@ -101,5 +103,56 @@ public class Map {
             return null;
         Random r = new Random();
         return emptyTiles.get(r.nextInt(emptyTiles.size()));
+    }
+
+    /**
+     * Retrieves an empty City Tile owned by the specified player from the map.
+     *
+     * @param playerDTO The PlayerDTO object representing the player whose empty City Tile is to be retrieved.
+     * @return An empty City Tile owned by the specified player, or null if no empty City Tiles are found.
+     */
+    public Tile getEmptyCity(PlayerDTO playerDTO){
+        List<Tile> emptyTiles = new ArrayList<>();
+        Random r = new Random();
+        for (Tile tile : tiles) {
+            if (tile.getType() instanceof CityTile cityTile && cityTile.getPlayer() != null && cityTile.getPlayer().equals(playerDTO) && Soldier.getSoldierByCoordinates(tile.getCoordinates())==null){
+                emptyTiles.add(tile);
+            }
+        }
+        if (emptyTiles.isEmpty()){
+            return null;
+        }
+        return emptyTiles.get(r.nextInt(emptyTiles.size()));
+    }
+
+    /**
+     * Retrieves a list of all City Tiles from the map.
+     *
+     * @return A List containing all City Tiles present on the map.
+     */
+    public List<CityTile> getAllCities(){
+        List<CityTile> cities = new ArrayList<>();
+        for (Tile tile : tiles) {
+            if (tile.getType() instanceof CityTile cityTile){
+                cities.add((cityTile));
+            }
+        }
+        return cities;
+    }
+
+    /**
+     * Retrieves all cities owned by a specific player.
+     *
+     * @param p The PlayerDTO object representing the player whose cities are to be retrieved.
+     * @return A List of CityTile objects owned by the specified player.
+     */
+    public List<CityTile> getAllCitiesFromAPlayer(PlayerDTO p){
+        List<CityTile> cities = new ArrayList<>();
+        for (Tile tile : tiles) {
+            if (tile.getType() instanceof CityTile cityTile && cityTile.getPlayer() != null && cityTile.getPlayer().equals(p)){
+                cities.add((cityTile));
+            }
+        }
+        return cities;
     }
 }

@@ -159,6 +159,10 @@ public class GameWebSocket {
                 GameInstance.useForestAction(soldier);
             }
 
+            if("recruitAction".equals(type)){
+                playerSession.getPlayerDTO().recruitSoldier();
+            }
+
             if("endTurn".equals(type)){
                 GameInstance.getInstance().nextTurn();
             }

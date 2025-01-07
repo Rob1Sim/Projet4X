@@ -5,8 +5,10 @@ import org.example.projet4dx.model.gameEngine.*;
 import org.example.projet4dx.model.gameEngine.engine.event.GameEvent;
 import org.example.projet4dx.model.gameEngine.engine.event.GameEventManager;
 import org.example.projet4dx.model.gameEngine.engine.event.GameEventType;
+import org.example.projet4dx.model.gameEngine.tile.CityTile;
 import org.example.projet4dx.model.gameEngine.tile.ForestTile;
 import org.example.projet4dx.model.gameEngine.tile.Map;
+import org.example.projet4dx.model.gameEngine.tile.Tile;
 import org.example.projet4dx.model.gameEngine.utils.Coordinates;
 import org.example.projet4dx.model.gameEngine.utils.Direction;
 import org.example.projet4dx.service.GameService;
@@ -70,6 +72,7 @@ public class GameInstance {
      */
     public synchronized void nextTurn() {
         currentPlayerTurn = (currentPlayerTurn + 1) % players.size();
+        useCity();
     }
 
     /**
@@ -134,6 +137,17 @@ public class GameInstance {
     public static void useForestAction(Soldier soldier) {
         if (GameInstance.getInstance().getMap().getTileAtCoord(soldier.getCoordinates()).getType() instanceof ForestTile) {
             GameInstance.getInstance().getMap().getTileAtCoord(soldier.getCoordinates()).getType().use();
+        }
+    }
+
+    /**
+     * Iterates through all CityTiles on the map and triggers their use() method if the CityTile is owned by the current player.
+     * Only the CityTiles belonging to the current player are interacted with.
+     */
+    private void useCity(){
+        PlayerDTO playerDTO = getCurrentPlayer();
+        for (CityTile cityTile: map.getAllCitiesFromAPlayer(playerDTO)){
+            cityTile.use();
         }
     }
 
