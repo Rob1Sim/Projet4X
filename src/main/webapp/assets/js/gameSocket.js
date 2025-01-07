@@ -99,6 +99,21 @@ function updateGameInfo(payload) {
             }
         });
     }
+    if(payload.gameState !== undefined) {
+        const gamePage = document.getElementById("game-page");
+        const waitingScreen = document.getElementById("waiting-screen");
+
+        switch (payload.gameState){
+            case "waiting":
+                gamePage.classList.add("waiting-screen-on");
+                waitingScreen.classList.remove("waiting-screen-on");
+                break;
+            default:
+                gamePage.classList.remove("waiting-screen-on");
+                waitingScreen.classList.add("waiting-screen-on");
+                break;
+           }
+    }
     if (payload.soldiers !== undefined) {
         displaySoldiers(payload.soldiers)
     }

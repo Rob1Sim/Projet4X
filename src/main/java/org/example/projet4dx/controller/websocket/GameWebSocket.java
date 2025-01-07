@@ -95,6 +95,13 @@ public class GameWebSocket {
         payload.addProperty("playerTurn", GameInstance.getInstance().getCurrentPlayer().getLogin());
         payload.add("playersInfo", playersInfo);
         payload.add("soldiers", StringifyUtil.jsonifySoldierList(GameInstance.getInstance().getAllSoldiers()));
+        String gameState = switch (GameInstance.getInstance().getPlayers().size()) {
+            case 1 -> "waiting";
+            case 0 -> "end";
+            default -> "playing";
+        };
+        payload.addProperty("gameState", gameState);
+
         json.add("payload", payload);
 
         String jsonString = json.toString();
@@ -173,6 +180,7 @@ public class GameWebSocket {
             if("endTurn".equals(type)){
                 GameInstance.getInstance().nextTurn();
             }
+
             broadcastGameUpdate(session);
             broadcastPlayersInfoUpdate();
         } catch (Exception e) {

@@ -4,7 +4,7 @@
 <%@ page import="org.example.projet4dx.model.gameEngine.PlayerDTO" %>
 
 <%@ page contentType="text/html;charset=UTF-8" %>
-<div class="game-page">
+<div class="game-page" id="game-page">
     <div class="game-panel">
         <div class="game-grid">
             <table id="table">
@@ -96,6 +96,9 @@
             <button class="send-btn" onclick="sendMessage()">Send</button>
         </div>
     </div>
+</div>
+<div class="waiting-screen waiting-screen-on" id="waiting-screen">
+    <h1>En attente d'autres joueurs ...</h1>
 </div>
 <script>
     const contextPath = "${pageContext.request.contextPath}";
