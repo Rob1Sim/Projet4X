@@ -11,7 +11,7 @@ window.onload = () => {
 
 function connectWebSocket() {
     try{
-        socket = new WebSocket("ws://localhost:8080/gameSocket");
+        socket = new WebSocket(`ws://${serverIp}:8080/gameSocket`);
 
         socket.onopen = () => {
             console.log("WebSocket connecté !");

@@ -2,6 +2,7 @@
 <%@ page import="org.example.projet4dx.model.gameEngine.utils.Coordinates" %>
 <%@ page import="java.util.List" %>
 <%@ page import="org.example.projet4dx.model.gameEngine.PlayerDTO" %>
+<%@ page import="java.net.InetAddress" %>
 
 <%@ page contentType="text/html;charset=UTF-8" %>
 <div class="game-page" id="game-page">
@@ -104,6 +105,7 @@
     <h1></h1>
 </div>
 <script>
+    const serverIp = window.location.hostname;
     const contextPath = "${pageContext.request.contextPath}";
     const playerSession = "${playerSessionLogin}";
 </script>
