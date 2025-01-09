@@ -203,6 +203,9 @@ public class GameInstance {
         Soldier potentialSoldier = Soldier.getSoldierByCoordinates(newCoordinates);
         if (potentialSoldier != null && soldier.getPlayerDTO().getSoldierBySoldier(potentialSoldier) == null) {
             soldier.attack(potentialSoldier);
+            if (potentialSoldier.getHP() >0){
+                return true;
+            }
         }
         if (GameInstance.getInstance().getMap().getTileAtCoord(newCoordinates).collide(soldier)){
             soldier.setCoordinates(newCoordinates);
