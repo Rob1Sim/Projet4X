@@ -7,17 +7,6 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <div class="history-single-container">
-    <!--TODO: Remplacer par les données-->
-    <%
-        String date = request.getParameter("date");
-        String score = request.getParameter("score");
-        if (date == null) {
-            date = "Pas de date";
-        }
-        if (score == null) {
-            score = "0";
-        }
-    %>
-    <p class="history-date"><%=date%></p>
-    <p>Score: <%=score%></p>
+    <p class="history-date">${param.date}</p>
+    <p>Score: ${param.score}</p>
 </div>

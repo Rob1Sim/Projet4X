@@ -1,6 +1,4 @@
-<%@ page import="org.example.projet4dx.model.PlayerGame" %>
-<%@ page import="java.util.List" %>
-<%--
+<%@ taglib prefix="c" uri="jakarta.tags.core" %><%--
   Created by IntelliJ IDEA.
   User: robis
   Date: 21/12/2024
@@ -12,23 +10,13 @@
     <div class="history-container">
         <h2 class="pp-title">Historique</h2>
         <div class="history-multiple-container">
-            <!--TODO: Remplacer par un for each Ga-->
-            <%
-                List<PlayerGame> playerGameList = (List<PlayerGame>) request.getAttribute("playerGames");
-                if (playerGameList != null) {
-
-                    for (int i =playerGameList.size()-1 ; i>=0; i--){
-                        PlayerGame pg = playerGameList.get(i);
-                        String date = pg.getGame().getDate().toString();
-                        String score = String.valueOf(pg.getScore());
-            %>
-            <jsp:include page="historyContainer.jsp" >
-                <jsp:param name="date" value="<%= date %>" />
-                <jsp:param name="score" value="<%= score %>" />
-            </jsp:include>
-            <%}}%>
+            <c:forEach var="history" items="${historyData}">
+                <jsp:include page="historyContainer.jsp">
+                    <jsp:param name="date" value="${history.date}" />
+                    <jsp:param name="score" value="${history.score}" />
+                </jsp:include>
+            </c:forEach>
         </div>
-
     </div>
     <div class="stats-container">
         <h2 class="pp-title">Stats</h2>

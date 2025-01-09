@@ -1,33 +1,23 @@
-<%@ page import="org.example.projet4dx.model.gameEngine.tile.Map" %>
-<%@ page import="org.example.projet4dx.model.gameEngine.utils.Coordinates" %>
-<%@ page import="java.util.List" %>
-<%@ page import="org.example.projet4dx.model.gameEngine.PlayerDTO" %>
-<%@ page import="java.net.InetAddress" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+
 
 <%@ page contentType="text/html;charset=UTF-8" %>
 <div class="game-page" id="game-page">
     <div class="game-panel">
         <div class="game-grid">
             <table id="table">
-            <% Map map = (Map)request.getAttribute("gameMap");
-                for (int y = 0; y < map.getHeight(); y++){
-                    %>
-                <tr id="l-<%=y%>">
-            <%
-                for (int x = 0; x < map.getWidth(); x++){
-                      %>
-                    <td id="<%=x%>-<%=y%>" class="case">
-                        <img class="background_img case" src="${pageContext.request.contextPath}/assets/images/icons/Small/<%=map.getTileAtCoord(new Coordinates(x,y)).getImage()%>" alt="icone">
-                    </td>
-                    <%
-                }
-                }
-            %>
-                </tr>
+                <c:forEach var="row" items="${gridRows}">
+                    <tr>
+                        <c:forEach var="tile" items="${row}">
+                            <td id="${tile.x}-${tile.y}" class="case">
+                                <img class="background_img case" src="${pageContext.request.contextPath}/assets/images/icons/Small/${tile.image}" alt="icone">
+                            </td>
+                        </c:forEach>
+                    </tr>
+                </c:forEach>
             </table>
         </div>
         <div class="game-control">
-            <!-- TODO:Implémenter les actions -->
             <h3>Action</h3>
             <div class="control-btn">
                 <div class="control-btn-display">
@@ -62,15 +52,10 @@
     <div class="game-info">
         <div class="players-info">
             <h3>Joueurs</h3>
-            <!-- TODO:Implémenter la listes des joueurs -->
             <ul>
-            <% List<PlayerDTO> players = (List<PlayerDTO>) request.getAttribute("players");
-                if (players != null){
-                    for(PlayerDTO player : players){%>
-                        <li><%=player.getLogin()%></li><%
-                    }
-                }
-                %>
+                <c:forEach var="player" items="${players}">
+                    <li>${player.login}</li>
+                </c:forEach>
             </ul>
         </div>
         <div class="player-score-round">

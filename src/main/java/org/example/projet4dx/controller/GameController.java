@@ -10,12 +10,16 @@ import org.example.projet4dx.model.gameEngine.engine.GameInstance;
 import org.example.projet4dx.model.Player;
 import org.example.projet4dx.model.PlayerGame;
 import org.example.projet4dx.model.gameEngine.PlayerDTO;
+import org.example.projet4dx.model.gameEngine.tile.Map;
+import org.example.projet4dx.model.gameEngine.utils.Coordinates;
 import org.example.projet4dx.service.PlayerGameService;
 import org.example.projet4dx.util.AuthenticationUtil;
 import org.example.projet4dx.util.DisplayLayoutUtils;
 import org.example.projet4dx.util.PersistenceManager;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @WebServlet(name = "GameServlet", value="/game")
 public class GameController extends HttpServlet {
@@ -45,7 +49,20 @@ public class GameController extends HttpServlet {
         }else {
             playerDTO = AuthenticationUtil.getCurrentPlayerDTO(request);
         }
-        request.setAttribute("gameMap", gameInstance.getMap());
+        Map gameMap = gameInstance.getMap();
+
+        List<List<java.util.Map<String, String>>> gridRows = new ArrayList<>();
+        for (int y = 0; y < gameMap.getHeight(); y++) {
+            List<java.util.Map<String, String>> row = new ArrayList<>();
+            for (int x = 0; x < gameMap.getWidth(); x++) {
+                String image = gameMap.getTileAtCoord(new Coordinates(x, y)).getImage();
+                System.out.println(image);
+                row.add(java.util.Map.of("x", String.valueOf(x), "y", String.valueOf(y), "image", image));
+            }
+            gridRows.add(row);
+        }
+        System.out.println(gridRows);
+        request.setAttribute("gridRows", gridRows);
         request.setAttribute("players", gameInstance.getPlayers());
         request.setAttribute("playerScore", playerDTO.getScore());
         request.setAttribute("productionPoints", playerDTO.getProductionPoint());

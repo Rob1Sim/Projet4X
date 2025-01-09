@@ -3,6 +3,7 @@ package org.example.projet4dx.util;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.example.projet4dx.model.Player;
 
 import java.io.IOException;
 
@@ -21,6 +22,12 @@ public class DisplayLayoutUtils {
      * @throws IOException if an I/O error occurs during the forwarding process
      */
     public static void displayLayout(String pageTitle, String pageJSP, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Player currentPlayer = AuthenticationUtil.getCurrentPlayer(request);
+        if (currentPlayer != null) {
+            request.setAttribute("greeting", "Bonjour, " + currentPlayer.getLogin());
+        } else {
+            request.setAttribute("greeting", "Connexion/Inscription");
+        }
         request.setCharacterEncoding("UTF-8");
         response.setContentType("text/html;charset=UTF-8");
         request.setAttribute("pageTitle", pageTitle);
