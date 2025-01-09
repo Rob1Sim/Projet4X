@@ -2,7 +2,8 @@
 # **Projet JEE - 4X Game**
 ## **Auteurs**
 - Robin Simonneau
-- [Autres contributeurs]
+- Loann Potier
+- Simon Landry
 
 ---
 ## **Description**
@@ -30,27 +31,34 @@ Ce projet consiste à développer un jeu de stratégie multijoueur au tour par t
 ## **Structure du projet**
 ```plaintext
 Projet4DX
-├── src/main/java
-│   ├── org.example.model        # Entités et logique métier
-│   ├── org.examplecontroller   # Servlets et contrôleurs
-│   ├── org.exampleutil         # Classes utilitaires
-├── src/main/webapp
-│   ├── WEB-INF
-│   │   └── web.xml             # Configuration du déploiement
-│   ├── views                   # Fichiers JSP
-│   │   ├── login.jsp
-│   │   ├── game.jsp
-│   │   ├── score.jsp
-│   │   └── combat.jsp
-│   ├── assets                  # Ressources statiques
-│       ├── css                 # Styles CSS
-│       ├── js                  # Scripts JavaScript
-│       └── images              # Images nécessaires
-├── src/main/resources
-│   └── sql   
-├── src/test/java               # Tests unitaires
-├── pom.xml                     # Configuration Maven
-└── README.md                   # Documentation
+├── src
+│   ├── main
+│   │   ├── java
+│   │   │   └── org.example.projet4dx
+│   │   │       ├── controller
+│   │   │       │   ├── websocket
+│   │   │       │   │   └── GameController
+│   │   │       │   ├── HelloServlet
+│   │   │       │   ├── LoginController
+│   │   │       │   └── ProfilePageController
+│   │   │       ├── model
+│   │   │       ├── service
+│   │   │       └── util
+│   │   ├── resources
+│   │   └── webapp
+│   │       ├── assets
+│   │       │   ├── css
+│   │       │   ├── images
+│   │       │   └── js
+│   │       ├── views
+│   │       ├── WEB-INF
+│   │       └── index.jsp
+├── test
+├── target
+├── Dockerfile
+├── pom.xml
+├── Projet4DX.iml
+└── README.md
 ```
 
 ---
@@ -100,15 +108,6 @@ mvn javadoc:javadoc
 ```
 Et est accessible dans le dossier target/site/apidocs/.
 
-## **Technologies utilisées**
-- Via le websocket synchroniser les soldats à chaque tour
-- Sélectionner et mouvoir tous les soldats dans le front
-- Envoyer les changements des soldats via le websocket et appelé le backend en conséquence
-- Configurer les actions des soldats (+ limité le déplacement à une case de chaque soldats)
-- Configurer la fin de tour (et donc bloquer les joueurs à qui ce n'est pas le tour coté front)
-- Corriger les bugs de toutes les parties précédentes
-- Corriger les bugs du système de jeu qui n'a pas été testé
-- Polish en ajoutant du responsive
 
 
 
