@@ -243,12 +243,13 @@ function deforestAction(){
 }
 
 function recruitAction(){
-    if (doSelectedSoldierCanDoAnAction()) {
+    if (playerSession === playerTurn ) {
         const payload = {
             type: "recruitAction",
         };
         socket.send(JSON.stringify(payload));
-        endOfAnAction();
+    }else{
+        addMessageToChat("Système: Ce n'est pas votre tour !");
     }
 }
 
