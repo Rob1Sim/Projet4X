@@ -10,6 +10,7 @@ import org.example.projet4dx.model.gameEngine.engine.event.GameEventType;
 import org.example.projet4dx.model.gameEngine.tile.CityTile;
 import org.example.projet4dx.model.gameEngine.tile.ForestTile;
 import org.example.projet4dx.model.gameEngine.tile.Map;
+import org.example.projet4dx.model.gameEngine.tile.Tile;
 import org.example.projet4dx.model.gameEngine.utils.Coordinates;
 import org.example.projet4dx.model.gameEngine.utils.Direction;
 import org.example.projet4dx.service.GameService;
@@ -207,11 +208,15 @@ public class GameInstance {
                 return true;
             }
         }
-        if (GameInstance.getInstance().getMap().getTileAtCoord(newCoordinates).collide(soldier)){
+        Tile futureTile = GameInstance.getInstance().getMap().getTileAtCoord(newCoordinates);
+        if (futureTile.collide(soldier)){
             soldier.setCoordinates(newCoordinates);
             GameEventManager.getInstance().notifyGameEvent(new GameEvent(GameEventType.MOVEMENT,"Le soldat se déplace vers "+direction+" !"));
             return true;
         }else{
+            if (futureTile.getType() instanceof CityTile cityTile && cityTile.getDefendPoint()>0){
+                return true;
+            }
             GameEventManager.getInstance().notifyGameEvent(new GameEvent(GameEventType.MOVEMENT,"Le soldat ne peut pas se déplacer vers "+direction+" !"));
             return false;
         }
