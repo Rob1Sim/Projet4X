@@ -3,6 +3,7 @@ package org.example.projet4dx.model.gameEngine.tile;
 import org.example.projet4dx.model.gameEngine.ICombat;
 import org.example.projet4dx.model.gameEngine.PlayerDTO;
 import org.example.projet4dx.model.gameEngine.Soldier;
+import org.example.projet4dx.model.gameEngine.engine.GameInstance;
 import org.example.projet4dx.model.gameEngine.engine.event.GameEvent;
 import org.example.projet4dx.model.gameEngine.engine.event.GameEventManager;
 import org.example.projet4dx.model.gameEngine.engine.event.GameEventType;
@@ -25,6 +26,7 @@ public class CityTile implements ITileType, ICombat {
      * Represents a PlayerDTO object containing data transfer information for a player in a game session.
      */
     private PlayerDTO player;
+    private String cityName;
 
     /**
      * Constructs a CityTile with the specified defense points.
@@ -34,6 +36,7 @@ public class CityTile implements ITileType, ICombat {
     public CityTile(int defendPoint) {
         this.defendPoint = defendPoint;
         this.isTaken = false;
+        cityName = GameInstance.getUniqueCityName();
     }
 
 
@@ -61,7 +64,7 @@ public class CityTile implements ITileType, ICombat {
     public boolean canCollide(Tile tile, Soldier soldier) {
         if (Soldier.getSoldierByCoordinates(tile.getCoordinates()) == null
                 && !isTaken() && soldier.attack(this)) {//Sois la ville n'est pas prise donc tu peux l'attaquer pour la prendre
-            GameEventManager.getInstance().notifyGameEvent(new GameEvent(GameEventType.ACTION, player.getLogin() + " prends une ville !"));
+            GameEventManager.getInstance().notifyGameEvent(new GameEvent(GameEventType.ACTION, player.getLogin() + " prends "+cityName+" !"));
             return true;
         }
         //Sois la ville est prise par ton joueur donc tu peux te ballader dessus, sinon tu ne peux pas

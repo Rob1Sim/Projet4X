@@ -3,6 +3,7 @@ package org.example.projet4dx.model.gameEngine.tile;
 import org.example.projet4dx.model.Player;
 import org.example.projet4dx.model.gameEngine.PlayerDTO;
 import org.example.projet4dx.model.gameEngine.Soldier;
+import org.example.projet4dx.model.gameEngine.engine.GameInstance;
 import org.example.projet4dx.model.gameEngine.utils.Coordinates;
 
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ public class Map {
         height = 8;
         tiles = new ArrayList<>();
         Random rand = new Random();
+        GameInstance.addCity();
         for ( int x = 0; x < width; x++ ) {
             for ( int y = 0; y < height; y++ ) {
                 tiles.add(getRandomTileType(x, y, rand));

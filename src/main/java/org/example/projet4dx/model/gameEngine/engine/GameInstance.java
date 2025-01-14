@@ -32,7 +32,7 @@ public class GameInstance {
     private final List<PlayerDTO> players;
     private final Map map;
     private int currentPlayerTurn;
-
+    private static final List<String> lieux = new ArrayList<>();
 
 
     private GameInstance() {
@@ -42,6 +42,7 @@ public class GameInstance {
         game.setDate(LocalDate.now());
         players = new ArrayList<>();
         this.currentPlayerTurn = 0;
+
     }
 
     /**
@@ -270,5 +271,65 @@ public class GameInstance {
 
     public List<PlayerDTO> getPlayers() {
         return players;
+    }
+
+    /**
+     * Generates a unique city name by selecting a random city from the available cities in the GameInstance class.
+     * If no cities are available, a default city name "cité" is returned.
+     *
+     * @return A unique city name that has been randomly selected from the list of cities.
+     */
+    public static String getUniqueCityName(){
+        if (GameInstance.lieux.isEmpty()){
+            return "cité";
+        }
+        Random random = new Random();
+        int index = random.nextInt(GameInstance.lieux.size());
+        String city = GameInstance.lieux.get(index);
+        GameInstance.lieux.remove(index);
+        return city;
+    }
+
+    public static void addCity(){
+        lieux.add("Whiterun");
+        lieux.add("Solitude");
+        lieux.add("Windhelm");
+        lieux.add("Riften");
+        lieux.add("Markarth");
+        lieux.add("Winterhold");
+        lieux.add("Falkreath");
+        lieux.add("Dawnstar");
+        lieux.add("Morthal");
+
+        // Ajout des villages
+        lieux.add("Riverwood");
+        lieux.add("Ivarstead");
+        lieux.add("Kynesgrove");
+        lieux.add("Rorikstead");
+        lieux.add("Dragon Bridge");
+        lieux.add("Shor's Stone");
+        lieux.add("Helgen");
+
+        // Ajout des forteresses
+        lieux.add("Fort Greymoor");
+        lieux.add("Fort Amol");
+        lieux.add("Fort Sungard");
+        lieux.add("Fort Greenwall");
+        lieux.add("Fort Snowhawk");
+        lieux.add("Fort Hraggstad");
+        lieux.add("Fort Dawnguard");
+
+        // Ajout des autres lieux
+        lieux.add("High Hrothgar");
+        lieux.add("Blackreach");
+        lieux.add("Labyrinthian");
+        lieux.add("Sky Haven Temple");
+        lieux.add("Throat of the World");
+        lieux.add("Bleak Falls Barrow");
+        lieux.add("Ustengrav");
+        lieux.add("Sovngarde");
+        lieux.add("The Ragged Flagon");
+        lieux.add("Castle Volkihar");
+        lieux.add("The Bannered Mare");
     }
 }
