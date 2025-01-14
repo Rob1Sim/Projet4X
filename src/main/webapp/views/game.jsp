@@ -75,7 +75,7 @@
     </div>
     <div class="game-message">
         <h3>Message</h3>
-        <div id="messages" style="border: 1px solid #000; height: 30vh; overflow-y: auto; padding: 1vw;">
+        <div id="messages" style="border: 1px solid #000; height: 30vh; overflow-y: auto; padding: 1vw; width: 20vw">
         </div>
         <div class="textbox-send">
             <input type="text" id="messageInput" placeholder="Enter your message" />

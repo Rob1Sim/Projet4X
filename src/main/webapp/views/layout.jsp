@@ -16,7 +16,7 @@
 <nav class="navbar">
     <div class="navbar-container">
         <div class="logo">
-            <a href="#">4X</a>
+            <a href="#">Skyrim Conquest!</a>
         </div>
         <ul class="nav-links">
             <li><a href="${pageContext.request.contextPath}/game" class="link-btn">Partie</a></li>
